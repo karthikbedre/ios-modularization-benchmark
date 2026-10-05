@@ -1,0 +1,187 @@
+import CoreKit
+import CoreModels
+import DesignSystem
+import SwiftUI
+import __Domain__API
+
+struct __Domain__ListScreen: View {
+    @State private var viewModel: __Domain__ListViewModel
+    @State private var isComposing = false
+
+    init(service: any __Domain__Service) {
+        _viewModel = State(initialValue: __Domain__ListViewModel(service: service))
+    }
+
+    var body: some View {
+        AsyncContentView(state: viewModel.state, retry: viewModel.load) { items in
+            List {
+                if items.isEmpty {
+                    EmptyStateView("Nothing here", systemImage: "tray", message: "Try a different filter or start a new request.")
+                }
+                ForEach(items) { item in
+                    NavigationLink(value: item) {
+                        __Domain__Row(item: item)
+                    }
+                    .swipeActions {
+                        Button(item.isFollowed ? "Unfollow" : "Follow") {
+                            Task { await viewModel.toggleFollow(item) }
+                        }
+                        .tint(Palette.accent)
+                    }
+                }
+            }
+            .refreshable { await viewModel.load() }
+        }
+        .navigationTitle("__TITLE__")
+        .searchable(text: $viewModel.filter.searchText)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                Menu {
+                    Picker("Status", selection: $viewModel.filter.status) {
+                        Text("Any status").tag(__Domain__Status?.none)
+                        ForEach(__Domain__Status.allCases, id: \.self) { Text($0.title).tag(Optional($0)) }
+                    }
+                    Picker("District", selection: $viewModel.filter.district) {
+                        Text("Any district").tag(String?.none)
+                        ForEach(viewModel.districts, id: \.self) { Text($0).tag(Optional($0)) }
+                    }
+                    Toggle("Followed only", isOn: $viewModel.filter.followedOnly)
+                } label: {
+                    Label("Filter", systemImage: "line.3.horizontal.decrease.circle")
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Button("New", systemImage: "plus") { isComposing = true }
+            }
+        }
+        .navigationDestination(for: __Domain__Item.self) { item in
+            __Domain__DetailScreen(item: item, service: viewModel.service)
+        }
+        .sheet(isPresented: $isComposing, onDismiss: { Task { await viewModel.load() } }) {
+            NavigationStack {
+                __Domain__FormScreen(service: viewModel.service, district: viewModel.districts.first ?? "Center")
+            }
+        }
+        .task(id: viewModel.filter) { await viewModel.load() }
+    }
+}
+
+struct __Domain__Row: View {
+    let item: __Domain__Item
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 2) {
+            HStack {
+                Text(item.title)
+                Spacer()
+                if item.isFollowed {
+                    Image(systemName: "star.fill").foregroundStyle(Palette.warning).font(.caption)
+                }
+            }
+            HStack {
+                StatusBadge(item.status.title, color: item.status == .closed ? .secondary : Palette.accent)
+                Text("\(item.district) · \(item.updatedAt.formatted(date: .abbreviated, time: .omitted))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+
+struct __Domain__DetailScreen: View {
+    let item: __Domain__Item
+    let service: any __Domain__Service
+    @State private var related: [DomainSummary] = []
+
+    var body: some View {
+        List {
+            Section {
+                Text(item.title).font(.title3.weight(.semibold))
+                Text(item.summary)
+            }
+            Section {
+                KeyValueRow("Status", value: item.status.title)
+                KeyValueRow("District", value: item.district)
+                KeyValueRow("Fee", value: item.fee.isPositive ? item.fee.formatted : "None")
+                KeyValueRow("Updated", value: item.updatedAt.formatted(date: .abbreviated, time: .shortened))
+                if !item.tags.isEmpty {
+                    KeyValueRow("Tags", value: item.tags.joined(separator: ", "))
+                }
+            }
+            if !related.isEmpty {
+                Section("Related services") {
+                    ForEach(related, id: \.self) { summary in
+                        KeyValueRow(summary.title, value: summary.detail)
+                    }
+                }
+            }
+        }
+        .navigationTitle("Details")
+        .navigationBarTitleDisplayMode(.inline)
+        .task { related = await service.related() }
+    }
+}
+
+struct __Domain__FormScreen: View {
+    @State private var viewModel: __Domain__FormViewModel
+    @Environment(\.dismiss) private var dismiss
+
+    init(service: any __Domain__Service, district: String) {
+        _viewModel = State(initialValue: __Domain__FormViewModel(service: service, district: district))
+    }
+
+    var body: some View {
+        Form {
+            Section {
+                TextField("Title", text: $viewModel.draft.title)
+                TextField("District", text: $viewModel.draft.district)
+                TextField("What do you need?", text: $viewModel.draft.summary, axis: .vertical)
+                    .lineLimit(3...6)
+            }
+            if let message = viewModel.errorMessage {
+                Section { Text(message).foregroundStyle(Palette.negative) }
+            }
+        }
+        .navigationTitle("New request")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+            ToolbarItem(placement: .confirmationAction) {
+                Button("Send") { Task { await viewModel.submit() } }
+                    .disabled(viewModel.isSubmitting)
+            }
+        }
+        .onChange(of: viewModel.submitted) { _, submitted in
+            if submitted != nil { dismiss() }
+        }
+    }
+}
+
+struct __Domain__LookupScreen: View {
+    let itemID: String
+    let service: any __Domain__Service
+    @State private var item: LoadState<__Domain__Item> = .idle
+
+    var body: some View {
+        AsyncContentView(state: item, retry: load) { item in
+            __Domain__DetailScreen(item: item, service: service)
+        }
+        .task {
+            if case .idle = item { await load() }
+        }
+    }
+
+    private func load() async {
+        do {
+            item = .loaded(try await service.item(id: itemID))
+        } catch {
+            item = .failed("This entry could not be found.")
+        }
+    }
+}
+
+#Preview {
+    NavigationStack {
+        __Domain__ListScreen(service: Preview__Domain__Service())
+    }
+}

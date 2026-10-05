@@ -10,3 +10,6 @@ xcuserdata/
 # SwiftPM
 .build/
 .swiftpm/
+
+# Scaled builds from civitas-gen --domains N. Regenerated from the spec and seed.
+build/

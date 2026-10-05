@@ -1,0 +1,71 @@
+import CoreModels
+import Foundation
+
+public enum __Domain__Status: String, CaseIterable, Hashable, Sendable, Codable {
+    case open, inReview, approved, closed
+
+    public var title: String {
+        switch self {
+        case .open: "Open"
+        case .inReview: "In review"
+        case .approved: "Approved"
+        case .closed: "Closed"
+        }
+    }
+}
+
+public struct __Domain__Item: Identifiable, Hashable, Sendable, Codable {
+    public var id: String
+    public var title: String
+    public var summary: String
+    public var district: String
+    public var status: __Domain__Status
+    public var updatedAt: Date
+    public var fee: Money
+    public var tags: [String]
+    public var isFollowed: Bool
+
+    public init(id: String, title: String, summary: String, district: String, status: __Domain__Status, updatedAt: Date, fee: Money, tags: [String], isFollowed: Bool) {
+        self.id = id
+        self.title = title
+        self.summary = summary
+        self.district = district
+        self.status = status
+        self.updatedAt = updatedAt
+        self.fee = fee
+        self.tags = tags
+        self.isFollowed = isFollowed
+    }
+}
+
+public struct __Domain__Draft: Hashable, Sendable {
+    public var title: String
+    public var summary: String
+    public var district: String
+
+    public init(title: String, summary: String, district: String) {
+        self.title = title
+        self.summary = summary
+        self.district = district
+    }
+}
+
+public struct __Domain__Filter: Hashable, Sendable {
+    public var status: __Domain__Status?
+    public var district: String?
+    public var followedOnly: Bool
+    public var searchText: String
+
+    public init(status: __Domain__Status? = nil, district: String? = nil, followedOnly: Bool = false, searchText: String = "") {
+        self.status = status
+        self.district = district
+        self.followedOnly = followedOnly
+        self.searchText = searchText
+    }
+}
+
+public enum __Domain__Error: Error, Hashable, Sendable {
+    case emptyTitle
+    case summaryTooShort(minimum: Int)
+    case notFound
+}

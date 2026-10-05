@@ -1,0 +1,79 @@
+import CoreKit
+import CoreModels
+import Foundation
+import __Domain__API
+import __Dep__API
+
+struct __Domain__Dependencies: Sendable {
+    var __dep__: any __Dep__Service
+}
+
+public struct Live__Domain__Service: __Domain__Service {
+    private let repository: any __Domain__Repository
+    private let dependencies: __Domain__Dependencies
+    private let dates: DateProvider
+    private let makeID: @Sendable () -> String
+
+    init(
+        repository: any __Domain__Repository,
+        dependencies: __Domain__Dependencies,
+        dates: DateProvider = .live,
+        makeID: @escaping @Sendable () -> String = { "__domain__-\(UUID().uuidString.prefix(8).lowercased())" }
+    ) {
+        self.repository = repository
+        self.dependencies = dependencies
+        self.dates = dates
+        self.makeID = makeID
+    }
+
+    public func items(matching filter: __Domain__Filter) async throws -> [__Domain__Item] {
+        __Domain__Query.apply(filter, to: try await repository.load())
+    }
+
+    public func item(id: String) async throws -> __Domain__Item {
+        guard let item = try await repository.load().first(where: { $0.id == id }) else { throw __Domain__Error.notFound }
+        return item
+    }
+
+    public func districts() async throws -> [String] {
+        __Domain__Query.districts(in: try await repository.load())
+    }
+
+    public func submit(_ draft: __Domain__Draft) async throws -> __Domain__Item {
+        let valid = try __Domain__Validator.validate(draft)
+        let item = __Domain__Item(
+            id: makeID(), title: valid.title, summary: valid.summary, district: valid.district, status: .open,
+            updatedAt: dates.now, fee: .zero, tags: [], isFollowed: true
+        )
+        try await repository.update { $0.append(item) }
+        return item
+    }
+
+    public func toggleFollow(id: String) async throws -> __Domain__Item {
+        try await repository.update { items in
+            guard let index = items.firstIndex(where: { $0.id == id }) else { throw __Domain__Error.notFound }
+            items[index].isFollowed.toggle()
+            return items[index]
+        }
+    }
+
+    public func related() async -> [DomainSummary] {
+        let providers: [any SummaryProviding] = [
+            dependencies.__dep__,
+        ]
+        var summaries: [DomainSummary] = []
+        for provider in providers {
+            summaries.append(await provider.summary())
+        }
+        return summaries
+    }
+
+    public func summary() async -> DomainSummary {
+        guard let items = try? await repository.load() else {
+            return DomainSummary(title: "__TITLE__", detail: "Unavailable")
+        }
+        let open = items.count { $0.status == .open || $0.status == .inReview }
+        let followed = items.count(where: \.isFollowed)
+        return DomainSummary(title: "__TITLE__", detail: "\(open) active · \(followed) followed")
+    }
+}

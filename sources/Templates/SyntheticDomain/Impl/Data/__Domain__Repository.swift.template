@@ -1,0 +1,46 @@
+import CoreKit
+import Foundation
+import __Domain__API
+
+protocol __Domain__Repository: Sendable {
+    func load() async throws -> [__Domain__Item]
+    func update<Result: Sendable>(_ change: @Sendable (inout [__Domain__Item]) throws -> Result) async throws -> Result
+}
+
+actor Bundle__Domain__Repository: __Domain__Repository {
+    private let loader: MockDataLoader
+    private var cached: [__Domain__Item]?
+
+    init(loader: MockDataLoader) {
+        self.loader = loader
+    }
+
+    func load() async throws -> [__Domain__Item] {
+        if let cached { return cached }
+        let items = try await loader.load([__Domain__Item].self, resource: "__domain__", in: .module)
+        if let cached { return cached }
+        cached = items
+        return items
+    }
+
+    func update<Result: Sendable>(_ change: @Sendable (inout [__Domain__Item]) throws -> Result) async throws -> Result {
+        var items = try await load()
+        let result = try change(&items)
+        cached = items
+        return result
+    }
+}
+
+actor InMemory__Domain__Repository: __Domain__Repository {
+    private(set) var items: [__Domain__Item]
+
+    init(items: [__Domain__Item]) {
+        self.items = items
+    }
+
+    func load() async throws -> [__Domain__Item] { items }
+
+    func update<Result: Sendable>(_ change: @Sendable (inout [__Domain__Item]) throws -> Result) async throws -> Result {
+        try change(&items)
+    }
+}

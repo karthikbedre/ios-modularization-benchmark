@@ -5,6 +5,11 @@ public struct Spec: Decodable, Sendable {
     public struct Module: Decodable, Sendable {
         public var name: String
         public var dependsOn: [String]
+
+        public init(name: String, dependsOn: [String]) {
+            self.name = name
+            self.dependsOn = dependsOn
+        }
     }
 
     public var app: String
@@ -16,6 +21,7 @@ public struct Spec: Decodable, Sendable {
     public var apiCore: [String]
     public var domainCore: [String]
     public var domains: [Module]
+    public var synthetic: SyntheticConfig?
 
     public var domainNames: [String] { domains.map(\.name) }
 

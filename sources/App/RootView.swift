@@ -67,6 +67,13 @@ private struct ExploreScreen: View {
 
     var body: some View {
         List {
+            if !SyntheticFeatures.entries.isEmpty {
+                Section("More services") {
+                    ForEach(SyntheticFeatures.entries, id: \.title) { entry in
+                        NavigationLink(entry.title) { entry.screen(router.container) }
+                    }
+                }
+            }
             ForEach(groups, id: \.0) { title, sections in
                 Section(title) {
                     if title == "Get around" {

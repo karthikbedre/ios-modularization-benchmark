@@ -9,6 +9,7 @@ Scenarios
   clean          delete derived data, then build
   noop           build again with nothing changed
   private-body   change the body of a private function in the hub's implementation
+  private-decl   add a new top-level private declaration to the hub's implementation
   public-impl    change a public declaration in the hub's implementation sources
   api-change     change a public declaration in the hub's API sources
   add-file       add a new source file to the hub's implementation, regenerate, then build
@@ -43,9 +44,11 @@ import time
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
+# Folder holding approach-<topology>. The repo for N=16, build/scale/<N> for generated sizes.
+ROOT = REPO
 TOPOLOGIES = ["tree", "api-impl"]
-SCENARIOS = ["clean", "noop", "private-body", "public-impl", "api-change", "add-file"]
-CHANGE_SCENARIOS = {"private-body", "public-impl", "api-change", "add-file"}
+SCENARIOS = ["clean", "noop", "private-body", "private-decl", "public-impl", "api-change", "add-file"]
+CHANGE_SCENARIOS = {"private-body", "private-decl", "public-impl", "api-change", "add-file"}
 DEFAULT_HUBS = "Identity,Notifications,ReportIssue"
 # Short incremental builds vary more run to run (CV up to 11% in the pilot), so they get more runs.
 DEFAULT_RUNS = {"clean": 10}
@@ -59,7 +62,7 @@ FIELDS = ["timestamp", "topology", "linking", "scenario", "hub", "run", "seconds
 
 
 def project_dir(topology):
-    return REPO / f"approach-{topology}"
+    return ROOT / f"approach-{topology}"
 
 
 def probe_file(topology, scenario, hub):
@@ -78,6 +81,9 @@ def added_file(topology, hub, run):
 def probe_body(scenario, value):
     if scenario == "private-body":
         return f"private func benchProbe() -> Int {{ {value} }}"
+    if scenario == "private-decl":
+        # Body edits leave dependents alone. A new top-level name may not (swiftlang/swift#92617).
+        return f"private func benchProbe{value}() -> Int {{ {value} }}"
     # A new public name every run changes the module's public interface.
     return f"public func benchProbe{value}() {{}}"
 
@@ -139,6 +145,7 @@ def environment(linking):
         "commit": run("git", "-C", str(REPO), "rev-parse", "HEAD"),
         "dirty": bool(run("git", "-C", str(REPO), "status", "--porcelain", "--", "sources", "spec", "generator")),
         "linking": linking,
+        "root": str(ROOT.relative_to(REPO)) if ROOT.is_relative_to(REPO) else str(ROOT),
     }
 
 
@@ -206,12 +213,17 @@ def main():
     parser.add_argument("--topologies", default=",".join(TOPOLOGIES))
     parser.add_argument("--linking", choices=["static", "dynamic"], default="static")
     parser.add_argument("--hubs", default=DEFAULT_HUBS, help="domains whose files the change scenarios edit")
-    parser.add_argument("--runs", type=int, help="runs per scenario. Defaults to 10 for clean and 20 otherwise")
+    parser.add_argument("--runs", type=int, help="runs for every scenario, overriding the two options below")
+    parser.add_argument("--clean-runs", type=int, default=DEFAULT_RUNS["clean"])
+    parser.add_argument("--incremental-runs", type=int, default=DEFAULT_INCREMENTAL_RUNS)
     parser.add_argument("--first-run", type=int, default=1, help="run number to start from, to resume a series")
     parser.add_argument("--cooldown", type=float, default=5.0, help="seconds to wait between timed builds")
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--derived-data", type=Path, default=Path.home() / "Library/Developer/CivitasBench")
+    parser.add_argument("--root", type=Path, default=REPO, help="folder holding approach-<topology>, such as build/scale/100")
     args = parser.parse_args()
+    global ROOT
+    ROOT = args.root.resolve()
 
     scenarios = args.scenarios.split(",")
     args.topologies = args.topologies.split(",")
@@ -221,13 +233,13 @@ def main():
         sys.exit(f"unknown scenario or topology: {', '.join(unknown)}")
 
     recorder = Recorder(args.out, args.linking)
-    derived = {t: args.derived_data / f"{t}-{args.linking}" for t in args.topologies}
+    derived = {t: args.derived_data / ROOT.name / f"{t}-{args.linking}" for t in args.topologies}
     for topology in args.topologies:
         seconds = generate(topology, args.linking)
         print(f"generated {topology} ({args.linking}) in {seconds:.1f}s", flush=True)
 
     for scenario in scenarios:
-        count = args.runs or DEFAULT_RUNS.get(scenario, DEFAULT_INCREMENTAL_RUNS)
+        count = args.runs or (args.clean_runs if scenario == "clean" else args.incremental_runs)
         runs = range(args.first_run, args.first_run + count)
         for hub in (hubs if scenario in CHANGE_SCENARIOS else ["-"]):
             run_series(args, recorder, derived, scenario, hub, runs)

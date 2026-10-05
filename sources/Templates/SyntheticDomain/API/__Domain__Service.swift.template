@@ -1,0 +1,20 @@
+import CoreModels
+import SwiftUI
+
+public protocol __Domain__Service: SummaryProviding {
+    func items(matching filter: __Domain__Filter) async throws -> [__Domain__Item]
+    func item(id: String) async throws -> __Domain__Item
+    func districts() async throws -> [String]
+    func submit(_ draft: __Domain__Draft) async throws -> __Domain__Item
+    func toggleFollow(id: String) async throws -> __Domain__Item
+    /// Summaries of the services this one builds on, shown alongside its own data.
+    func related() async -> [DomainSummary]
+}
+
+public struct __Domain__EntryPoints: Sendable {
+    public var detail: @MainActor @Sendable (_ itemID: String) -> AnyView
+
+    public init(detail: @escaping @MainActor @Sendable (_ itemID: String) -> AnyView) {
+        self.detail = detail
+    }
+}

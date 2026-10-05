@@ -1,0 +1,26 @@
+#if DEBUG
+import CoreModels
+import Foundation
+
+extension __Domain__Item {
+    public static let preview = __Domain__Item(
+        id: "__domain__-preview", title: "__TITLE__ in Old Town", summary: "A sample entry for previews.", district: "Old Town",
+        status: .inReview, updatedAt: .now, fee: .usd(25), tags: ["sample"], isFollowed: false
+    )
+}
+
+public struct Preview__Domain__Service: __Domain__Service {
+    public init() {}
+
+    public func items(matching filter: __Domain__Filter) async throws -> [__Domain__Item] { [.preview] }
+    public func item(id: String) async throws -> __Domain__Item { .preview }
+    public func districts() async throws -> [String] { ["Old Town"] }
+    public func submit(_ draft: __Domain__Draft) async throws -> __Domain__Item { .preview }
+    public func toggleFollow(id: String) async throws -> __Domain__Item { .preview }
+    public func related() async -> [DomainSummary] { [] }
+
+    public func summary() async -> DomainSummary {
+        DomainSummary(title: "__TITLE__", detail: "1 open")
+    }
+}
+#endif

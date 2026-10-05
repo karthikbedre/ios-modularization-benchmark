@@ -71,3 +71,16 @@ domains:
     dependsOn: [Events, Dining, Library, Transit, Places]
   - name: Home
     dependsOn: [Identity, Notifications, Agenda, Favorites, Wallet, Tickets, Reservations, Events, Dining, Parking, Transit, Library, ReportIssue, Search]
+
+# Growth beyond the seeds, used by `civitas-gen --domains N`. Synthetic domains are expanded from
+# sources/Templates/SyntheticDomain and attach to earlier domains with preferential attachment,
+# so a few domains become hubs, as in large production apps. Same seed, same graph.
+synthetic:
+  seed: 20261004
+  identityProbability: 0.7
+  minDependencies: 1
+  maxDependencies: 4
+  hubBias: 1.0
+  excluded: [Home, Search]
+  prefixes: [Street, Park, Water, Energy, Youth, Senior, Business, Housing, Health, Animal, Arts, Sports, Tourism, Safety, Waste, Tree, Harbor, School, Bike, Noise]
+  suffixes: [Permits, Programs, Requests, Grants, Registry, Bookings, Inspections, Alerts, Licenses, Feedback]

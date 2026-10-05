@@ -37,6 +37,7 @@ struct CivitasApp: App {
             LibraryFeature.register, ReportIssueFeature.register, SearchFeature.register, HomeFeature.register,
         ]
         features.forEach { $0(container) }
+        SyntheticFeatures.register(in: container)
         return container
     }
 }

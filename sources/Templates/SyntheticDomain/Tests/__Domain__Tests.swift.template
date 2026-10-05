@@ -1,0 +1,112 @@
+import CoreModels
+import Foundation
+import Testing
+@testable import __Domain__
+import __Domain__API
+import __Dep__API
+
+private let now = Date(timeIntervalSince1970: 1_791_201_600)
+
+private func item(_ id: String, _ status: __Domain__Status, district: String = "Old Town", daysAgo: Double = 1, followed: Bool = false, tags: [String] = []) -> __Domain__Item {
+    __Domain__Item(id: id, title: "Title \(id)", summary: "Summary \(id)", district: district, status: status,
+                   updatedAt: now.addingTimeInterval(-daysAgo * 86_400), fee: .zero, tags: tags, isFollowed: followed)
+}
+
+private let items = [
+    item("closed", .closed, daysAgo: 0),
+    item("open-old", .open, daysAgo: 5),
+    item("review", .inReview, district: "Riverside", followed: true, tags: ["inspection"]),
+    item("open-new", .open, daysAgo: 1),
+]
+
+private func makeService(_ repository: InMemory__Domain__Repository) -> Live__Domain__Service {
+    Live__Domain__Service(
+        repository: repository,
+        dependencies: __Domain__Dependencies(
+            __dep__: Preview__Dep__Service(),
+        ),
+        dates: .fixed(now),
+        makeID: { "__domain__-new" }
+    )
+}
+
+struct __Domain__QueryTests {
+    @Test func openWorkComesFirstThenNewest() {
+        #expect(__Domain__Query.apply(__Domain__Filter(), to: items).map(\.id) == ["open-new", "open-old", "review", "closed"])
+    }
+
+    @Test func filtersCombine() {
+        #expect(__Domain__Query.apply(__Domain__Filter(district: "Riverside"), to: items).map(\.id) == ["review"])
+        #expect(__Domain__Query.apply(__Domain__Filter(followedOnly: true), to: items).map(\.id) == ["review"])
+        #expect(__Domain__Query.apply(__Domain__Filter(status: .open), to: items).count == 2)
+        #expect(__Domain__Query.apply(__Domain__Filter(searchText: "inspect"), to: items).map(\.id) == ["review"])
+    }
+
+    @Test func districtsAreUniqueAndSorted() {
+        #expect(__Domain__Query.districts(in: items) == ["Old Town", "Riverside"])
+    }
+}
+
+struct Live__Domain__ServiceTests {
+    @Test func submitValidatesTrimsAndFollows() async throws {
+        let repository = InMemory__Domain__Repository(items: items)
+        let service = makeService(repository)
+
+        let submitted = try await service.submit(__Domain__Draft(title: "  New one ", summary: " Please review this soon ", district: "Center"))
+
+        #expect(submitted.id == "__domain__-new")
+        #expect(submitted.title == "New one")
+        #expect(submitted.isFollowed)
+        #expect(await repository.items.count == items.count + 1)
+    }
+
+    @Test(arguments: [
+        (__Domain__Draft(title: " ", summary: "Long enough summary", district: "Center"), __Domain__Error.emptyTitle),
+        (__Domain__Draft(title: "Title", summary: "Too short", district: "Center"), __Domain__Error.summaryTooShort(minimum: 12)),
+    ])
+    func submitRejectsInvalidDrafts(draft: __Domain__Draft, expected: __Domain__Error) async {
+        await #expect(throws: expected) { try await makeService(InMemory__Domain__Repository(items: items)).submit(draft) }
+    }
+
+    @Test func toggleFollowFlipsAndRejectsUnknownIDs() async throws {
+        let service = makeService(InMemory__Domain__Repository(items: items))
+
+        #expect(try await service.toggleFollow(id: "closed").isFollowed)
+        #expect(try await !service.toggleFollow(id: "closed").isFollowed)
+        await #expect(throws: __Domain__Error.notFound) { try await service.toggleFollow(id: "missing") }
+    }
+
+    @Test func summaryCountsActiveAndFollowed() async {
+        #expect(await makeService(InMemory__Domain__Repository(items: items)).summary().detail == "3 active · 1 followed")
+    }
+
+    @Test func relatedHasOneSummaryPerDependency() async {
+        let expected: [String] = [
+            "__Dep__",
+        ]
+
+        #expect(await makeService(InMemory__Domain__Repository(items: items)).related().count == expected.count)
+    }
+}
+
+@MainActor
+struct __Domain__ViewModelTests {
+    @Test func listLoadsItemsAndDistricts() async {
+        let viewModel = __Domain__ListViewModel(service: makeService(InMemory__Domain__Repository(items: items)))
+
+        await viewModel.load()
+
+        #expect(viewModel.state.value?.count == 4)
+        #expect(viewModel.districts == ["Old Town", "Riverside"])
+    }
+
+    @Test func formShowsValidationMessage() async {
+        let viewModel = __Domain__FormViewModel(service: makeService(InMemory__Domain__Repository(items: items)), district: "Center")
+        viewModel.draft.title = "Title"
+
+        await viewModel.submit()
+
+        #expect(viewModel.errorMessage == "Describe the request in at least 12 characters.")
+        #expect(viewModel.submitted == nil)
+    }
+}

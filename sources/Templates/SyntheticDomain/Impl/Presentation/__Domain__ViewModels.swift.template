@@ -1,0 +1,74 @@
+import CoreKit
+import Foundation
+import Observation
+import __Domain__API
+
+@MainActor
+@Observable
+final class __Domain__ListViewModel {
+    private(set) var state: LoadState<[__Domain__Item]> = .idle
+    private(set) var districts: [String] = []
+    var filter = __Domain__Filter()
+
+    let service: any __Domain__Service
+
+    init(service: any __Domain__Service) {
+        self.service = service
+    }
+
+    func load() async {
+        if state.value == nil { state = .loading }
+        do {
+            async let items = service.items(matching: filter)
+            async let districts = service.districts()
+            state = .loaded(try await items)
+            self.districts = try await districts
+        } catch {
+            state = .failed("__TITLE__ could not be loaded.")
+        }
+    }
+
+    func toggleFollow(_ item: __Domain__Item) async {
+        _ = try? await service.toggleFollow(id: item.id)
+        await load()
+    }
+}
+
+@MainActor
+@Observable
+final class __Domain__FormViewModel {
+    var draft: __Domain__Draft
+    private(set) var submitted: __Domain__Item?
+    private(set) var errorMessage: String?
+    private(set) var isSubmitting = false
+
+    private let service: any __Domain__Service
+
+    init(service: any __Domain__Service, district: String) {
+        self.service = service
+        draft = __Domain__Draft(title: "", summary: "", district: district)
+    }
+
+    func submit() async {
+        isSubmitting = true
+        defer { isSubmitting = false }
+        do {
+            submitted = try await service.submit(draft)
+            errorMessage = nil
+        } catch let error as __Domain__Error {
+            errorMessage = error.message
+        } catch {
+            errorMessage = "The request could not be sent."
+        }
+    }
+}
+
+extension __Domain__Error {
+    var message: String {
+        switch self {
+        case .emptyTitle: "Give the request a title."
+        case .summaryTooShort(let minimum): "Describe the request in at least \(minimum) characters."
+        case .notFound: "This entry could not be found."
+        }
+    }
+}

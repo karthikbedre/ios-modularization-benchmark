@@ -1,0 +1,46 @@
+import Foundation
+import __Domain__API
+
+enum __Domain__Query {
+    /// Open work first, then most recently updated.
+    static func apply(_ filter: __Domain__Filter, to items: [__Domain__Item]) -> [__Domain__Item] {
+        let needle = filter.searchText.trimmingCharacters(in: .whitespaces)
+        return items
+            .filter { item in
+                (filter.status == nil || item.status == filter.status)
+                    && (filter.district == nil || item.district == filter.district)
+                    && (!filter.followedOnly || item.isFollowed)
+                    && (needle.isEmpty || item.title.localizedStandardContains(needle) || item.summary.localizedStandardContains(needle)
+                        || item.tags.contains { $0.localizedStandardContains(needle) })
+            }
+            .sorted { lhs, rhs in
+                let (left, right) = (rank(lhs.status), rank(rhs.status))
+                return left != right ? left < right : lhs.updatedAt > rhs.updatedAt
+            }
+    }
+
+    static func districts(in items: [__Domain__Item]) -> [String] {
+        Array(Set(items.map(\.district))).sorted()
+    }
+
+    private static func rank(_ status: __Domain__Status) -> Int {
+        switch status {
+        case .open: 0
+        case .inReview: 1
+        case .approved: 2
+        case .closed: 3
+        }
+    }
+}
+
+enum __Domain__Validator {
+    static let minimumSummary = 12
+
+    static func validate(_ draft: __Domain__Draft) throws(__Domain__Error) -> __Domain__Draft {
+        let title = draft.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let summary = draft.summary.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !title.isEmpty else { throw .emptyTitle }
+        guard summary.count >= minimumSummary else { throw .summaryTooShort(minimum: minimumSummary) }
+        return __Domain__Draft(title: title, summary: summary, district: draft.district)
+    }
+}

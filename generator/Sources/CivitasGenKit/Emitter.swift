@@ -27,10 +27,13 @@ struct ModuleContents {
 public struct Emitter {
     public var spec: Spec
     public var sourcesRoot: URL
+    /// Files that exist only in memory, merged over `sourcesRoot`. Keyed by source folder, then relative path.
+    public var virtualSources: [String: [String: Data]]
 
-    public init(spec: Spec, sourcesRoot: URL) {
+    public init(spec: Spec, sourcesRoot: URL, virtualSources: [String: [String: Data]] = [:]) {
         self.spec = spec
         self.sourcesRoot = sourcesRoot
+        self.virtualSources = virtualSources
     }
 
     /// Generated paths relative to the output folder. Anything else there, like the Xcode project, is left alone.
@@ -50,22 +53,25 @@ public struct Emitter {
             var moduleContents = ModuleContents()
             for directory in module.sourceDirectories {
                 let source = sourcesRoot.appending(path: directory.source)
-                guard directoryExists(source) else {
+                let virtual = virtualSources[directory.source] ?? [:]
+                guard directoryExists(source) || !virtual.isEmpty else {
                     if directory.isOptional { continue }
                     throw EmitterError.missingSources(source.path)
                 }
+                let onDisk = directoryExists(source) ? try files(in: source) : []
                 let destination = [moduleRoot, directory.role.rawValue, directory.destination]
                     .filter { !$0.isEmpty }
                     .joined(separator: "/")
                 // A test target is its own module, so it keeps importing the domain it tests.
                 let owningDomain = directory.role == .tests ? nil : module.domain
-                for relativePath in try files(in: source) {
+                for relativePath in Set(onDisk).union(virtual.keys).sorted() {
                     let file = source.appending(path: relativePath)
+                    let raw = try virtual[relativePath] ?? Data(contentsOf: file)
                     let data: Data
                     switch directory.role {
                     case .sources, .tests:
                         guard file.pathExtension == "swift" else { throw EmitterError.unsupportedFile(file.path) }
-                        let text = try String(contentsOf: file, encoding: .utf8)
+                        let text = String(decoding: raw, as: UTF8.self)
                         let output = graph.topology == .tree ? rewriter.rewriteForTree(text, owningDomain: owningDomain) : text
                         let isTest = directory.role == .tests
                         violations += checker.violations(
@@ -76,7 +82,7 @@ public struct Emitter {
                         )
                         data = Data(output.utf8)
                     case .resources:
-                        data = try Data(contentsOf: file)
+                        data = raw
                     }
                     planned["\(destination)/\(relativePath)"] = data
                 }

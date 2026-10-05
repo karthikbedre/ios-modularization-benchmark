@@ -1,0 +1,30 @@
+import CoreKit
+import DI
+import SwiftUI
+import __Domain__API
+import __Dep__API
+
+public enum __Domain__Feature {
+    public static let title = "__TITLE__"
+
+    public static func register(in container: Container) {
+        container.registerShared((any __Domain__Service).self) {
+            Live__Domain__Service(
+                repository: Bundle__Domain__Repository(loader: MockDataLoader()),
+                dependencies: __Domain__Dependencies(
+                    __dep__: container.resolve((any __Dep__Service).self),
+                )
+            )
+        }
+        container.register(__Domain__EntryPoints.self) {
+            __Domain__EntryPoints { itemID in
+                AnyView(__Domain__LookupScreen(itemID: itemID, service: container.resolve((any __Domain__Service).self)))
+            }
+        }
+    }
+
+    @MainActor
+    public static func makeScreen(container: Container) -> some View {
+        __Domain__ListScreen(service: container.resolve((any __Domain__Service).self))
+    }
+}
