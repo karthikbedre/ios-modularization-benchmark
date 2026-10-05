@@ -1,0 +1,60 @@
+# Domain graph for the Civitas benchmark app.
+#
+# Both topologies are generated from this file by `generator/`.
+# - tree:     each domain is one module. A domain imports the modules of the domains it depends on.
+# - api-impl: each domain is split into <Name>API and <Name>. A domain imports only the API modules
+#             of the domains it depends on. API modules import only `apiCore`.
+#
+# Domain edges must form a DAG so the tree topology can express them.
+
+app: Civitas
+bundleIdPrefix: io.github.karthikbedre.civitas
+deploymentTarget: "17.0"
+swiftVersion: "6.0"
+
+core:
+  - name: CoreKit
+    dependsOn: []
+  - name: CoreModels
+    dependsOn: [CoreKit]
+  - name: DesignSystem
+    dependsOn: [CoreKit, CoreModels]
+  - name: DI
+    dependsOn: []
+
+# Core modules the app target depends on.
+appCore: [DesignSystem, DI]
+
+# Core modules every API module depends on (api-impl only).
+apiCore: [CoreKit, CoreModels]
+
+# Core modules every domain implementation depends on.
+domainCore: [CoreKit, CoreModels, DesignSystem, DI]
+
+domains:
+  - name: Identity
+    dependsOn: []
+  - name: Map
+    dependsOn: []
+  - name: Notifications
+    dependsOn: [Identity]
+  - name: Wallet
+    dependsOn: [Identity]
+  - name: Tickets
+    dependsOn: [Wallet, Identity]
+  - name: Events
+    dependsOn: [Tickets, Map]
+  - name: Parking
+    dependsOn: [Wallet, Map]
+  - name: Transit
+    dependsOn: [Wallet, Map]
+  - name: Reservations
+    dependsOn: [Identity, Notifications]
+  - name: Dining
+    dependsOn: [Reservations, Map]
+  - name: Library
+    dependsOn: [Identity, Notifications]
+  - name: ReportIssue
+    dependsOn: [Map, Notifications]
+  - name: Home
+    dependsOn: [Identity, Map, Notifications, Wallet, Tickets, Events, Parking, Transit, Reservations, Dining, Library, ReportIssue]

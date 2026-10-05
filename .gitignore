@@ -1,0 +1,12 @@
+.DS_Store
+
+# Xcode and Tuist output
+*.xcodeproj
+*.xcworkspace
+DerivedData/
+Derived/
+xcuserdata/
+
+# SwiftPM
+.build/
+.swiftpm/
