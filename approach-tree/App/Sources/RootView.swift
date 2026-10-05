@@ -1,47 +1,98 @@
+import DesignSystem
 import DI
-import Dining
-import Events
 import Home
-import Identity
-import Library
-import Map
 import Notifications
-import Parking
-import ReportIssue
-import Reservations
 import SwiftUI
-import Tickets
-import Transit
-import Wallet
 
 struct RootView: View {
+    enum Tab: Hashable {
+        case home, explore, wallet, inbox, profile
+    }
+
     let container: Container
+    let router: AppRouter
+    @State private var tab = Tab.home
+    @State private var unread = 0
 
     var body: some View {
-        TabView {
+        TabView(selection: $tab) {
             NavigationStack {
-                HomeFeature.makeScreen(container: container)
+                HomeFeature.makeScreen(container: container) { router.view(for: $0) }
             }
             .tabItem { Label("Home", systemImage: "house") }
+            .tag(Tab.home)
 
             NavigationStack {
-                List {
-                    NavigationLink("Identity") { IdentityFeature.makeScreen(container: container) }
-                    NavigationLink("Map") { MapFeature.makeScreen(container: container) }
-                    NavigationLink("Notifications") { NotificationsFeature.makeScreen(container: container) }
-                    NavigationLink("Wallet") { WalletFeature.makeScreen(container: container) }
-                    NavigationLink("Tickets") { TicketsFeature.makeScreen(container: container) }
-                    NavigationLink("Events") { EventsFeature.makeScreen(container: container) }
-                    NavigationLink("Parking") { ParkingFeature.makeScreen(container: container) }
-                    NavigationLink("Transit") { TransitFeature.makeScreen(container: container) }
-                    NavigationLink("Reservations") { ReservationsFeature.makeScreen(container: container) }
-                    NavigationLink("Dining") { DiningFeature.makeScreen(container: container) }
-                    NavigationLink("Library") { LibraryFeature.makeScreen(container: container) }
-                    NavigationLink("ReportIssue") { ReportIssueFeature.makeScreen(container: container) }
-                }
-                .navigationTitle("Services")
+                ExploreScreen(router: router)
             }
-            .tabItem { Label("Services", systemImage: "square.grid.2x2") }
+            .tabItem { Label("Explore", systemImage: "square.grid.2x2") }
+            .tag(Tab.explore)
+
+            NavigationStack {
+                router.view(for: .wallet)
+            }
+            .tabItem { Label("Wallet", systemImage: "creditcard") }
+            .tag(Tab.wallet)
+
+            NavigationStack {
+                router.view(for: .inbox)
+            }
+            .tabItem { Label("Inbox", systemImage: "tray") }
+            .badge(unread)
+            .tag(Tab.inbox)
+
+            NavigationStack {
+                router.view(for: .profile)
+            }
+            .tabItem { Label("Profile", systemImage: "person.crop.circle") }
+            .tag(Tab.profile)
+        }
+        .tint(Palette.accent)
+        .task(id: tab) {
+            unread = (try? await container.resolve((any NotificationsService).self).unreadCount()) ?? 0
+        }
+    }
+}
+
+private struct ExploreScreen: View {
+    let router: AppRouter
+
+    private let groups: [(String, [HomeSection])] = [
+        ("Get around", [.transit, .parking]),
+        ("Things to do", [.events, .dining, .library]),
+        ("Your plans", [.agenda, .tickets, .reservations, .saved]),
+        ("City services", [.reports]),
+    ]
+
+    var body: some View {
+        List {
+            ForEach(groups, id: \.0) { title, sections in
+                Section(title) {
+                    if title == "Get around" {
+                        NavigationLink {
+                            router.places
+                        } label: {
+                            Label("Places", systemImage: "map")
+                        }
+                    }
+                    ForEach(sections, id: \.self) { section in
+                        NavigationLink {
+                            router.view(for: section)
+                        } label: {
+                            Label(section.title, systemImage: section.systemImage)
+                        }
+                    }
+                }
+            }
+        }
+        .navigationTitle("Explore")
+        .toolbar {
+            NavigationLink {
+                router.view(for: .search)
+            } label: {
+                Image(systemName: "magnifyingglass")
+            }
+            .accessibilityLabel("Search")
         }
     }
 }

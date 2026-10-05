@@ -1,0 +1,260 @@
+[
+  {
+    "id": "event-jazz",
+    "title": "Autumn Jazz Night",
+    "summary": "Three local trios on the harbor stage, with food trucks from 5 PM. Bring a blanket for the lawn.",
+    "category": "music",
+    "start": "2026-10-08T23:30:00Z",
+    "end": "2026-10-09T02:30:00Z",
+    "venuePlaceID": "place-amphitheater",
+    "venueName": "Harbor Amphitheater",
+    "organizer": "Harborfront Arts",
+    "priceFrom": {
+      "minorUnits": 1800,
+      "currencyCode": "USD"
+    },
+    "isFeatured": true,
+    "tags": [
+      "outdoor",
+      "jazz",
+      "evening"
+    ]
+  },
+  {
+    "id": "event-film",
+    "title": "Films in the Park: Spirited Away",
+    "summary": "Outdoor screening on the big lawn. Popcorn stand opens at dusk.",
+    "category": "film",
+    "start": "2026-10-09T23:30:00Z",
+    "end": "2026-10-10T01:30:00Z",
+    "venuePlaceID": "place-central-park",
+    "venueName": "Lantern Park",
+    "organizer": "Parks Department",
+    "priceFrom": {
+      "minorUnits": 500,
+      "currencyCode": "USD"
+    },
+    "isFeatured": false,
+    "tags": [
+      "outdoor",
+      "family",
+      "animation"
+    ]
+  },
+  {
+    "id": "event-symphony",
+    "title": "City Symphony: Season Opener",
+    "summary": "Dvořák's New World Symphony with guest conductor Mei Tanaka.",
+    "category": "music",
+    "start": "2026-10-17T00:00:00Z",
+    "end": "2026-10-17T02:30:00Z",
+    "venuePlaceID": "place-civic-hall",
+    "venueName": "Civic Hall",
+    "organizer": "City Symphony",
+    "priceFrom": {
+      "minorUnits": 4200,
+      "currencyCode": "USD"
+    },
+    "isFeatured": true,
+    "tags": [
+      "classical",
+      "indoor"
+    ]
+  },
+  {
+    "id": "event-food-fest",
+    "title": "Harborfront Food Festival",
+    "summary": "Forty vendors, cooking demos and a pie contest. Wristband includes five tastings.",
+    "category": "food",
+    "start": "2026-10-10T16:00:00Z",
+    "end": "2026-10-11T01:00:00Z",
+    "venuePlaceID": "place-harbor-park",
+    "venueName": "Harbor Green",
+    "organizer": "Harborfront Business Association",
+    "priceFrom": {
+      "minorUnits": 1200,
+      "currencyCode": "USD"
+    },
+    "isFeatured": true,
+    "tags": [
+      "outdoor",
+      "tastings"
+    ]
+  },
+  {
+    "id": "event-comedy",
+    "title": "Open Mic Comedy",
+    "summary": "Local comics try out new sets. Limited seating.",
+    "category": "arts",
+    "start": "2026-10-07T02:00:00Z",
+    "end": "2026-10-07T04:00:00Z",
+    "venuePlaceID": "place-civic-hall",
+    "venueName": "Civic Hall",
+    "organizer": "Laugh Track Collective",
+    "priceFrom": {
+      "minorUnits": 2500,
+      "currencyCode": "USD"
+    },
+    "isFeatured": false,
+    "tags": [
+      "indoor",
+      "comedy",
+      "late"
+    ]
+  },
+  {
+    "id": "event-storytime",
+    "title": "Toddler Story Time",
+    "summary": "Songs, rhymes and picture books for ages 1 to 4.",
+    "category": "family",
+    "start": "2026-10-06T14:30:00Z",
+    "end": "2026-10-06T15:15:00Z",
+    "venuePlaceID": "place-lib-central",
+    "venueName": "Central Library",
+    "organizer": "Central Library",
+    "isFeatured": false,
+    "tags": [
+      "kids",
+      "indoor",
+      "free"
+    ]
+  },
+  {
+    "id": "event-cleanup",
+    "title": "River Road Cleanup",
+    "summary": "Gloves and bags provided. Meet at the boat launch.",
+    "category": "community",
+    "start": "2026-10-11T13:00:00Z",
+    "end": "2026-10-11T16:00:00Z",
+    "venuePlaceID": "place-lib-riverside",
+    "venueName": "Riverside Branch Library",
+    "organizer": "Friends of the River",
+    "isFeatured": false,
+    "tags": [
+      "volunteer",
+      "outdoor"
+    ]
+  },
+  {
+    "id": "event-5k",
+    "title": "Lantern Park 5K Fun Run",
+    "summary": "Untimed loop around the park. Strollers and dogs welcome.",
+    "category": "sports",
+    "start": "2026-10-18T13:00:00Z",
+    "end": "2026-10-18T15:00:00Z",
+    "venuePlaceID": "place-central-park",
+    "venueName": "Lantern Park",
+    "organizer": "Parks Department",
+    "isFeatured": true,
+    "tags": [
+      "running",
+      "outdoor",
+      "family"
+    ]
+  },
+  {
+    "id": "event-council",
+    "title": "City Council Town Hall",
+    "summary": "Budget priorities for next year. Public comment from 7 PM.",
+    "category": "community",
+    "start": "2026-10-07T23:00:00Z",
+    "end": "2026-10-08T01:00:00Z",
+    "venuePlaceID": "place-city-hall",
+    "venueName": "City Hall",
+    "organizer": "City Council",
+    "isFeatured": false,
+    "tags": [
+      "civic",
+      "indoor"
+    ]
+  },
+  {
+    "id": "event-art-walk",
+    "title": "Old Town Art Walk",
+    "summary": "Galleries stay open late with live music on Market Street.",
+    "category": "arts",
+    "start": "2026-10-16T22:00:00Z",
+    "end": "2026-10-17T02:00:00Z",
+    "venuePlaceID": "place-city-hall",
+    "venueName": "City Hall",
+    "organizer": "Old Town Arts District",
+    "isFeatured": false,
+    "tags": [
+      "galleries",
+      "evening",
+      "free"
+    ]
+  },
+  {
+    "id": "event-pumpkin",
+    "title": "Pumpkin Carving on the Green",
+    "summary": "Pumpkins and tools provided. Best carving wins a family pass.",
+    "category": "family",
+    "start": "2026-10-24T15:00:00Z",
+    "end": "2026-10-24T18:00:00Z",
+    "venuePlaceID": "place-harbor-park",
+    "venueName": "Harbor Green",
+    "organizer": "Parks Department",
+    "priceFrom": {
+      "minorUnits": 800,
+      "currencyCode": "USD"
+    },
+    "isFeatured": false,
+    "tags": [
+      "kids",
+      "outdoor",
+      "halloween"
+    ]
+  },
+  {
+    "id": "event-film-noir",
+    "title": "Noir Night: The Third Man",
+    "summary": "35mm screening with an introduction by the film society.",
+    "category": "film",
+    "start": "2026-10-22T01:00:00Z",
+    "end": "2026-10-22T03:00:00Z",
+    "venuePlaceID": "place-lib-central",
+    "venueName": "Central Library",
+    "organizer": "City Film Society",
+    "isFeatured": false,
+    "tags": [
+      "classic",
+      "indoor"
+    ]
+  },
+  {
+    "id": "event-summer-concert",
+    "title": "Summer Brass Band",
+    "summary": "Season finale of the brass series.",
+    "category": "music",
+    "start": "2026-08-15T23:00:00Z",
+    "end": "2026-08-16T01:00:00Z",
+    "venuePlaceID": "place-amphitheater",
+    "venueName": "Harbor Amphitheater",
+    "organizer": "Harborfront Arts",
+    "priceFrom": {
+      "minorUnits": 3000,
+      "currencyCode": "USD"
+    },
+    "isFeatured": false,
+    "tags": [
+      "outdoor"
+    ]
+  },
+  {
+    "id": "event-soccer",
+    "title": "Youth Soccer Finals",
+    "summary": "Under 12 city league finals. Free admission.",
+    "category": "sports",
+    "start": "2026-10-12T15:00:00Z",
+    "end": "2026-10-12T19:00:00Z",
+    "venuePlaceID": "place-central-park",
+    "venueName": "Lantern Park",
+    "organizer": "City Youth Sports",
+    "isFeatured": false,
+    "tags": [
+      "kids",
+      "outdoor"
+    ]
+  }
+]

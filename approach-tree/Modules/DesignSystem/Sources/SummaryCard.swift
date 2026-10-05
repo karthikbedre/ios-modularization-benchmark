@@ -18,7 +18,7 @@ public struct SummaryCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(Spacing.medium)
-        .background(.quaternary, in: RoundedRectangle(cornerRadius: 12))
+        .background(Palette.cardBackground, in: RoundedRectangle(cornerRadius: Radius.card))
     }
 }
 

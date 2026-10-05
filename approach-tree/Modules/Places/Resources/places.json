@@ -1,0 +1,252 @@
+[
+  {
+    "id": "place-central-park",
+    "name": "Lantern Park",
+    "category": "park",
+    "location": {
+      "latitude": 40.7128,
+      "longitude": -74.006
+    },
+    "address": {
+      "street": "200 Lantern Street",
+      "district": "Riverside",
+      "postalCode": "10027"
+    },
+    "openingHours": "6 AM to 10 PM"
+  },
+  {
+    "id": "place-harbor-park",
+    "name": "Harbor Green",
+    "category": "park",
+    "location": {
+      "latitude": 40.7041,
+      "longitude": -74.0138
+    },
+    "address": {
+      "street": "5 Pier Road",
+      "district": "Harborfront",
+      "postalCode": "10004"
+    },
+    "openingHours": "24 hours"
+  },
+  {
+    "id": "place-lib-central",
+    "name": "Central Library",
+    "category": "library",
+    "location": {
+      "latitude": 40.7153,
+      "longitude": -74.0021
+    },
+    "address": {
+      "street": "10 Civic Plaza",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "Mon to Sat 9 AM to 8 PM",
+    "phone": "555-0110"
+  },
+  {
+    "id": "place-lib-riverside",
+    "name": "Riverside Branch Library",
+    "category": "library",
+    "location": {
+      "latitude": 40.7212,
+      "longitude": -74.0101
+    },
+    "address": {
+      "street": "77 River Road",
+      "district": "Riverside",
+      "postalCode": "10027"
+    },
+    "openingHours": "Tue to Sun 10 AM to 6 PM",
+    "phone": "555-0111"
+  },
+  {
+    "id": "place-amphitheater",
+    "name": "Harbor Amphitheater",
+    "category": "venue",
+    "location": {
+      "latitude": 40.7032,
+      "longitude": -74.017
+    },
+    "address": {
+      "street": "1 Pier Road",
+      "district": "Harborfront",
+      "postalCode": "10004"
+    },
+    "openingHours": "Event days 5 PM to 11 PM",
+    "phone": "555-0120"
+  },
+  {
+    "id": "place-civic-hall",
+    "name": "Civic Hall",
+    "category": "venue",
+    "location": {
+      "latitude": 40.7145,
+      "longitude": -74.0049
+    },
+    "address": {
+      "street": "2 Civic Plaza",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "Event days",
+    "phone": "555-0121"
+  },
+  {
+    "id": "place-garage-r4",
+    "name": "Riverside Garage",
+    "category": "garage",
+    "location": {
+      "latitude": 40.7198,
+      "longitude": -74.0089
+    },
+    "address": {
+      "street": "90 River Road",
+      "district": "Riverside",
+      "postalCode": "10027"
+    },
+    "openingHours": "24 hours"
+  },
+  {
+    "id": "place-garage-o1",
+    "name": "Old Town Lot",
+    "category": "garage",
+    "location": {
+      "latitude": 40.716,
+      "longitude": -74.0035
+    },
+    "address": {
+      "street": "14 Market Street",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "6 AM to midnight"
+  },
+  {
+    "id": "place-station-central",
+    "name": "Central Station",
+    "category": "station",
+    "location": {
+      "latitude": 40.7139,
+      "longitude": -74.0042
+    },
+    "address": {
+      "street": "1 Station Square",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "5 AM to 1 AM"
+  },
+  {
+    "id": "place-station-harbor",
+    "name": "Harbor Station",
+    "category": "station",
+    "location": {
+      "latitude": 40.705,
+      "longitude": -74.015
+    },
+    "address": {
+      "street": "20 Pier Road",
+      "district": "Harborfront",
+      "postalCode": "10004"
+    },
+    "openingHours": "5 AM to 1 AM"
+  },
+  {
+    "id": "place-noodle-88",
+    "name": "Noodle Bar 88",
+    "category": "restaurant",
+    "location": {
+      "latitude": 40.7171,
+      "longitude": -74.0012
+    },
+    "address": {
+      "street": "88 Market Street",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "11 AM to 10 PM",
+    "phone": "555-0130"
+  },
+  {
+    "id": "place-tidewater",
+    "name": "Tidewater Grill",
+    "category": "restaurant",
+    "location": {
+      "latitude": 40.7037,
+      "longitude": -74.0161
+    },
+    "address": {
+      "street": "3 Pier Road",
+      "district": "Harborfront",
+      "postalCode": "10004"
+    },
+    "openingHours": "5 PM to 11 PM",
+    "phone": "555-0131"
+  },
+  {
+    "id": "place-greenleaf",
+    "name": "Greenleaf Kitchen",
+    "category": "restaurant",
+    "location": {
+      "latitude": 40.7205,
+      "longitude": -74.0071
+    },
+    "address": {
+      "street": "41 River Road",
+      "district": "Riverside",
+      "postalCode": "10027"
+    },
+    "openingHours": "8 AM to 9 PM",
+    "phone": "555-0132"
+  },
+  {
+    "id": "place-city-hall",
+    "name": "City Hall",
+    "category": "civicOffice",
+    "location": {
+      "latitude": 40.7149,
+      "longitude": -74.0055
+    },
+    "address": {
+      "street": "1 Civic Plaza",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "Mon to Fri 9 AM to 5 PM",
+    "phone": "555-0100"
+  },
+  {
+    "id": "place-dmv",
+    "name": "Permits and Licensing",
+    "category": "civicOffice",
+    "location": {
+      "latitude": 40.718,
+      "longitude": -74.004
+    },
+    "address": {
+      "street": "30 Market Street",
+      "district": "Old Town",
+      "postalCode": "10001"
+    },
+    "openingHours": "Mon to Fri 8 AM to 4 PM",
+    "phone": "555-0101"
+  },
+  {
+    "id": "place-clinic-riverside",
+    "name": "Riverside Health Clinic",
+    "category": "clinic",
+    "location": {
+      "latitude": 40.7223,
+      "longitude": -74.0079
+    },
+    "address": {
+      "street": "12 River Road",
+      "district": "Riverside",
+      "postalCode": "10027"
+    },
+    "openingHours": "Mon to Sat 8 AM to 6 PM",
+    "phone": "555-0140"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "offers": [
+    { "id": "offer-jazz-ga", "eventID": "event-jazz", "tier": "general", "price": { "minorUnits": 1800, "currencyCode": "USD" }, "remaining": 140, "maxPerOrder": 8 },
+    { "id": "offer-jazz-res", "eventID": "event-jazz", "tier": "reserved", "price": { "minorUnits": 3600, "currencyCode": "USD" }, "remaining": 12, "maxPerOrder": 6 },
+    { "id": "offer-jazz-vip", "eventID": "event-jazz", "tier": "vip", "price": { "minorUnits": 7500, "currencyCode": "USD" }, "remaining": 0, "maxPerOrder": 4 },
+    { "id": "offer-film-ga", "eventID": "event-film", "tier": "general", "price": { "minorUnits": 500, "currencyCode": "USD" }, "remaining": 300, "maxPerOrder": 10 },
+    { "id": "offer-symphony-res", "eventID": "event-symphony", "tier": "reserved", "price": { "minorUnits": 4200, "currencyCode": "USD" }, "remaining": 64, "maxPerOrder": 6 },
+    { "id": "offer-symphony-vip", "eventID": "event-symphony", "tier": "vip", "price": { "minorUnits": 9000, "currencyCode": "USD" }, "remaining": 8, "maxPerOrder": 2 },
+    { "id": "offer-food-ga", "eventID": "event-food-fest", "tier": "general", "price": { "minorUnits": 1200, "currencyCode": "USD" }, "remaining": 500, "maxPerOrder": 10 },
+    { "id": "offer-comedy-ga", "eventID": "event-comedy", "tier": "general", "price": { "minorUnits": 2500, "currencyCode": "USD" }, "remaining": 3, "maxPerOrder": 4 }
+  ],
+  "holds": [],
+  "tickets": [
+    {
+      "id": "ticket-9001", "ownerID": "user-1",
+      "event": { "eventID": "event-film", "title": "Films in the Park: Spirited Away", "venueName": "Lantern Park", "start": "2026-10-09T23:30:00Z", "end": "2026-10-10T01:30:00Z" },
+      "tier": "general", "price": { "minorUnits": 500, "currencyCode": "USD" }, "status": "active", "purchasedAt": "2026-09-28T12:00:00Z", "transactionID": "tx-0999"
+    },
+    {
+      "id": "ticket-8800", "ownerID": "user-1",
+      "event": { "eventID": "event-summer-concert", "title": "Summer Brass Band", "venueName": "Harbor Amphitheater", "start": "2026-08-15T23:00:00Z", "end": "2026-08-16T01:00:00Z" },
+      "tier": "reserved", "seat": "B12", "price": { "minorUnits": 3000, "currencyCode": "USD" }, "status": "used", "purchasedAt": "2026-08-01T12:00:00Z", "transactionID": "tx-0700"
+    }
+  ]
+}

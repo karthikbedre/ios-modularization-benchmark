@@ -1,0 +1,17 @@
+{
+  "zones": [
+    { "id": "zone-r4", "name": "Riverside Garage R4", "location": { "latitude": 40.7198, "longitude": -74.0089 }, "hourlyRate": { "minorUnits": 300, "currencyCode": "USD" }, "maxHours": 10, "totalSpots": 6, "rules": "Open 24 hours. Height limit 2.1 m." },
+    { "id": "zone-o1", "name": "Old Town Lot O1", "location": { "latitude": 40.7160, "longitude": -74.0035 }, "hourlyRate": { "minorUnits": 350, "currencyCode": "USD" }, "maxHours": 3, "totalSpots": 4, "rules": "Mon to Sat 8 AM to 8 PM. 3 hour limit." },
+    { "id": "zone-h2", "name": "Harbor Street H2", "location": { "latitude": 40.7045, "longitude": -74.0145 }, "hourlyRate": { "minorUnits": 400, "currencyCode": "USD" }, "maxHours": 2, "totalSpots": 3, "rules": "Street parking. 2 hour limit, every day." },
+    { "id": "zone-c3", "name": "Civic Plaza Underground", "location": { "latitude": 40.7150, "longitude": -74.0050 }, "hourlyRate": { "minorUnits": 250, "currencyCode": "USD" }, "maxHours": 12, "totalSpots": 5, "rules": "Open 6 AM to midnight." }
+  ],
+  "vehicles": [
+    { "plate": "CIV 4821", "nickname": "Blue hatchback", "ownerID": "user-1" },
+    { "plate": "RVR 1190", "nickname": "Work van", "ownerID": "user-1" }
+  ],
+  "sessions": [
+    { "id": "park-301", "ownerID": "user-2", "zoneID": "zone-h2", "zoneName": "Harbor Street H2", "plate": "XYZ 0001", "start": "2026-10-04T00:00:00Z", "end": "2026-12-31T00:00:00Z", "cost": { "minorUnits": 800, "currencyCode": "USD" }, "transactionIDs": ["tx-ext-1"] },
+    { "id": "park-302", "ownerID": "user-3", "zoneID": "zone-h2", "zoneName": "Harbor Street H2", "plate": "XYZ 0002", "start": "2026-10-04T00:00:00Z", "end": "2026-12-31T00:00:00Z", "cost": { "minorUnits": 800, "currencyCode": "USD" }, "transactionIDs": ["tx-ext-2"] },
+    { "id": "park-290", "ownerID": "user-1", "zoneID": "zone-r4", "zoneName": "Riverside Garage R4", "plate": "CIV 4821", "start": "2026-09-29T15:40:00Z", "end": "2026-09-29T18:40:00Z", "cost": { "minorUnits": 900, "currencyCode": "USD" }, "transactionIDs": ["tx-1002"] }
+  ]
+}

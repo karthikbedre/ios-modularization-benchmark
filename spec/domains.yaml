@@ -32,29 +32,42 @@ apiCore: [CoreKit, CoreModels]
 domainCore: [CoreKit, CoreModels, DesignSystem, DI]
 
 domains:
+  # Foundation
   - name: Identity
     dependsOn: []
-  - name: Map
+  - name: Places
     dependsOn: []
   - name: Notifications
     dependsOn: [Identity]
-  - name: Wallet
+  - name: Favorites
     dependsOn: [Identity]
+  - name: Agenda
+    dependsOn: [Identity, Notifications]
+  - name: Wallet
+    dependsOn: [Identity, Notifications]
+
+  # Commerce
   - name: Tickets
-    dependsOn: [Wallet, Identity]
-  - name: Events
-    dependsOn: [Tickets, Map]
-  - name: Parking
-    dependsOn: [Wallet, Map]
-  - name: Transit
-    dependsOn: [Wallet, Map]
+    dependsOn: [Wallet, Identity, Notifications, Agenda]
   - name: Reservations
-    dependsOn: [Identity, Notifications]
+    dependsOn: [Identity, Notifications, Agenda]
+
+  # Features
+  - name: Events
+    dependsOn: [Tickets, Places, Favorites, Agenda]
   - name: Dining
-    dependsOn: [Reservations, Map]
+    dependsOn: [Reservations, Places, Favorites]
+  - name: Parking
+    dependsOn: [Identity, Wallet, Places, Notifications]
+  - name: Transit
+    dependsOn: [Identity, Wallet, Places, Favorites]
   - name: Library
-    dependsOn: [Identity, Notifications]
+    dependsOn: [Identity, Notifications, Agenda, Favorites, Places]
   - name: ReportIssue
-    dependsOn: [Map, Notifications]
+    dependsOn: [Identity, Places, Notifications]
+
+  # Aggregators
+  - name: Search
+    dependsOn: [Events, Dining, Library, Transit, Places]
   - name: Home
-    dependsOn: [Identity, Map, Notifications, Wallet, Tickets, Events, Parking, Transit, Reservations, Dining, Library, ReportIssue]
+    dependsOn: [Identity, Notifications, Agenda, Favorites, Wallet, Tickets, Reservations, Events, Dining, Parking, Transit, Library, ReportIssue, Search]

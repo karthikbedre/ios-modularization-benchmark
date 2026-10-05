@@ -1,0 +1,267 @@
+{
+  "books": [
+    {
+      "id": "book-overstory",
+      "title": "The Overstory",
+      "author": "Richard Powers",
+      "isbn": "9780393635522",
+      "format": "print",
+      "year": 2018,
+      "subjects": [
+        "Fiction",
+        "Trees",
+        "Environment"
+      ],
+      "synopsis": "Nine strangers are drawn together by the lives of trees.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 1
+    },
+    {
+      "id": "book-sweetgrass",
+      "title": "Braiding Sweetgrass",
+      "author": "Robin Wall Kimmerer",
+      "isbn": "9781571313560",
+      "format": "print",
+      "year": 2013,
+      "subjects": [
+        "Nature",
+        "Botany",
+        "Essays"
+      ],
+      "synopsis": "Indigenous wisdom, scientific knowledge and the teachings of plants.",
+      "branchPlaceID": "place-lib-riverside",
+      "branchName": "Riverside Branch Library",
+      "copies": 2
+    },
+    {
+      "id": "book-sweetgrass-audio",
+      "title": "Braiding Sweetgrass",
+      "author": "Robin Wall Kimmerer",
+      "isbn": "9781705210024",
+      "format": "audiobook",
+      "year": 2016,
+      "subjects": [
+        "Nature",
+        "Botany",
+        "Essays"
+      ],
+      "synopsis": "Read by the author.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 5
+    },
+    {
+      "id": "book-dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "isbn": "9780441172719",
+      "format": "print",
+      "year": 1965,
+      "subjects": [
+        "Science fiction",
+        "Classic"
+      ],
+      "synopsis": "Politics, religion and ecology on the desert planet Arrakis.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 4
+    },
+    {
+      "id": "book-piranesi",
+      "title": "Piranesi",
+      "author": "Susanna Clarke",
+      "isbn": "9781635575637",
+      "format": "ebook",
+      "year": 2020,
+      "subjects": [
+        "Fiction",
+        "Fantasy"
+      ],
+      "synopsis": "A man lives in a house of infinite halls.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 3
+    },
+    {
+      "id": "book-wild-robot",
+      "title": "The Wild Robot",
+      "author": "Peter Brown",
+      "isbn": "9780316381994",
+      "format": "print",
+      "year": 2016,
+      "subjects": [
+        "Children",
+        "Robots"
+      ],
+      "synopsis": "A robot washes up on a wild island.",
+      "branchPlaceID": "place-lib-riverside",
+      "branchName": "Riverside Branch Library",
+      "copies": 2
+    },
+    {
+      "id": "book-cooked",
+      "title": "Salt Fat Acid Heat",
+      "author": "Samin Nosrat",
+      "isbn": "9781476753836",
+      "format": "print",
+      "year": 2017,
+      "subjects": [
+        "Cooking"
+      ],
+      "synopsis": "The four elements of good cooking.",
+      "branchPlaceID": "place-lib-riverside",
+      "branchName": "Riverside Branch Library",
+      "copies": 1
+    },
+    {
+      "id": "book-power-broker",
+      "title": "The Power Broker",
+      "author": "Robert A. Caro",
+      "isbn": "9780394720241",
+      "format": "print",
+      "year": 1974,
+      "subjects": [
+        "History",
+        "Cities",
+        "Biography"
+      ],
+      "synopsis": "Robert Moses and the fall of New York.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 1
+    },
+    {
+      "id": "book-death-and-life",
+      "title": "The Death and Life of Great American Cities",
+      "author": "Jane Jacobs",
+      "isbn": "9780679741954",
+      "format": "ebook",
+      "year": 1961,
+      "subjects": [
+        "Cities",
+        "Urban planning"
+      ],
+      "synopsis": "A blistering attack on city planning orthodoxy.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 2
+    },
+    {
+      "id": "book-project-hail-mary",
+      "title": "Project Hail Mary",
+      "author": "Andy Weir",
+      "isbn": "9780593135204",
+      "format": "audiobook",
+      "year": 2021,
+      "subjects": [
+        "Science fiction"
+      ],
+      "synopsis": "A lone astronaut must save Earth.",
+      "branchPlaceID": "place-lib-central",
+      "branchName": "Central Library",
+      "copies": 1
+    },
+    {
+      "id": "book-hidden-life",
+      "title": "The Hidden Life of Trees",
+      "author": "Peter Wohlleben",
+      "isbn": "9781771642484",
+      "format": "print",
+      "year": 2016,
+      "subjects": [
+        "Nature",
+        "Trees"
+      ],
+      "synopsis": "How trees feel and communicate.",
+      "branchPlaceID": "place-lib-riverside",
+      "branchName": "Riverside Branch Library",
+      "copies": 2
+    },
+    {
+      "id": "book-little-prince",
+      "title": "The Little Prince",
+      "author": "Antoine de Saint-Exupéry",
+      "isbn": "9780156012195",
+      "format": "print",
+      "year": 1943,
+      "subjects": [
+        "Children",
+        "Classic"
+      ],
+      "synopsis": "A pilot meets a prince from a small planet.",
+      "branchPlaceID": "place-lib-riverside",
+      "branchName": "Riverside Branch Library",
+      "copies": 3
+    }
+  ],
+  "loans": [
+    {
+      "id": "loan-41",
+      "ownerID": "user-1",
+      "bookID": "book-sweetgrass",
+      "title": "Braiding Sweetgrass",
+      "author": "Robin Wall Kimmerer",
+      "borrowedAt": "2026-09-16T17:00:00Z",
+      "dueDate": "2026-10-07T17:00:00Z",
+      "renewals": 0
+    },
+    {
+      "id": "loan-42",
+      "ownerID": "user-1",
+      "bookID": "book-dune",
+      "title": "Dune",
+      "author": "Frank Herbert",
+      "borrowedAt": "2026-09-28T17:00:00Z",
+      "dueDate": "2026-10-19T17:00:00Z",
+      "renewals": 1
+    },
+    {
+      "id": "loan-30",
+      "ownerID": "user-2",
+      "bookID": "book-overstory",
+      "title": "The Overstory",
+      "author": "Richard Powers",
+      "borrowedAt": "2026-09-20T12:00:00Z",
+      "dueDate": "2026-10-11T12:00:00Z",
+      "renewals": 0
+    },
+    {
+      "id": "loan-20",
+      "ownerID": "user-1",
+      "bookID": "book-wild-robot",
+      "title": "The Wild Robot",
+      "author": "Peter Brown",
+      "borrowedAt": "2026-08-01T12:00:00Z",
+      "dueDate": "2026-08-22T12:00:00Z",
+      "renewals": 0,
+      "returnedAt": "2026-08-20T12:00:00Z"
+    },
+    {
+      "id": "loan-31",
+      "ownerID": "user-3",
+      "bookID": "book-power-broker",
+      "title": "The Power Broker",
+      "author": "Robert A. Caro",
+      "borrowedAt": "2026-09-25T12:00:00Z",
+      "dueDate": "2026-10-16T12:00:00Z",
+      "renewals": 0
+    }
+  ],
+  "holds": [
+    {
+      "id": "hold-7",
+      "ownerID": "user-3",
+      "bookID": "book-overstory",
+      "title": "The Overstory",
+      "placedAt": "2026-09-22T12:00:00Z"
+    },
+    {
+      "id": "hold-8",
+      "ownerID": "user-1",
+      "bookID": "book-overstory",
+      "title": "The Overstory",
+      "placedAt": "2026-09-24T12:00:00Z"
+    }
+  ]
+}

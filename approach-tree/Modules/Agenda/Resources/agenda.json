@@ -1,0 +1,7 @@
+[
+  { "id": "cal-1", "ownerID": "user-1", "title": "City council open session", "start": "2026-10-07T23:00:00Z", "end": "2026-10-08T01:00:00Z", "location": "Civic Hall", "sourceDomain": "Agenda", "reminder": 1440 },
+  { "id": "cal-2", "ownerID": "user-1", "title": "Recycling pickup", "start": "2026-10-06T12:00:00Z", "end": "2026-10-06T13:00:00Z", "sourceDomain": "Agenda", "reminder": 60 },
+  { "id": "cal-3", "ownerID": "user-1", "title": "Farmers market volunteer shift", "start": "2026-10-10T13:00:00Z", "end": "2026-10-10T17:00:00Z", "location": "Lantern Park", "sourceDomain": "Agenda", "reminder": 60 },
+  { "id": "cal-4", "ownerID": "user-1", "title": "Dentist", "start": "2026-09-30T14:00:00Z", "end": "2026-09-30T15:00:00Z", "location": "Riverside Health Clinic", "sourceDomain": "Agenda", "reminder": 1440 },
+  { "id": "cal-5", "ownerID": "user-2", "title": "Someone else's meeting", "start": "2026-10-07T15:00:00Z", "end": "2026-10-07T16:00:00Z", "sourceDomain": "Agenda", "reminder": 0 }
+]

@@ -33,7 +33,9 @@ struct ModuleGraphTests {
 
         #expect(graph.modules.map(\.name) == ["App", "CoreKit", "DI", "Wallet", "Tickets"])
         #expect(graph.module(named: "Tickets")?.dependencies == ["CoreKit", "DI", "Wallet"])
-        #expect(graph.module(named: "Tickets")?.sourceDirectories.map(\.source) == ["Domains/Tickets/API", "Domains/Tickets/Impl"])
+        #expect(graph.module(named: "Tickets")?.sourceDirectories.map(\.source) == [
+            "Domains/Tickets/API", "Domains/Tickets/Impl", "Domains/Tickets/Resources", "Domains/Tickets/Tests",
+        ])
     }
 
     @Test func apiImplSplitsDomainsAndOnlyDependsOnAPIs() throws {

@@ -1,0 +1,30 @@
+{
+  "stops": [
+    { "id": "stop-central", "name": "Central Station", "location": { "latitude": 40.7139, "longitude": -74.0042 } },
+    { "id": "stop-civic", "name": "Civic Plaza", "location": { "latitude": 40.7150, "longitude": -74.0052 } },
+    { "id": "stop-market", "name": "Market Street", "location": { "latitude": 40.7168, "longitude": -74.0018 } },
+    { "id": "stop-riverside", "name": "Riverside", "location": { "latitude": 40.7205, "longitude": -74.0085 } },
+    { "id": "stop-river-road", "name": "River Road", "location": { "latitude": 40.7225, "longitude": -74.0101 } },
+    { "id": "stop-lantern", "name": "Lantern Park", "location": { "latitude": 40.7128, "longitude": -74.0060 } },
+    { "id": "stop-harbor", "name": "Harbor Station", "location": { "latitude": 40.7050, "longitude": -74.0150 } },
+    { "id": "stop-pier", "name": "Pier Road", "location": { "latitude": 40.7034, "longitude": -74.0166 } },
+    { "id": "stop-clinic", "name": "Health Clinic", "location": { "latitude": 40.7221, "longitude": -74.0079 } },
+    { "id": "stop-ferry", "name": "Ferry Terminal", "location": { "latitude": 40.7012, "longitude": -74.0180 } }
+  ],
+  "lines": [
+    { "id": "line-2", "name": "Line 2", "mode": "metro", "colorHex": "#E4572E", "stopIDs": ["stop-riverside", "stop-market", "stop-central", "stop-lantern", "stop-harbor"], "firstDeparture": 300, "lastDeparture": 1440, "headwayMinutes": 6, "minutesBetweenStops": 3 },
+    { "id": "line-5", "name": "Line 5", "mode": "metro", "colorHex": "#29335C", "stopIDs": ["stop-river-road", "stop-clinic", "stop-riverside", "stop-civic", "stop-central"], "firstDeparture": 330, "lastDeparture": 1410, "headwayMinutes": 8, "minutesBetweenStops": 2 },
+    { "id": "tram-a", "name": "Tram A", "mode": "tram", "colorHex": "#0FA3B1", "stopIDs": ["stop-civic", "stop-lantern", "stop-harbor", "stop-pier"], "firstDeparture": 360, "lastDeparture": 1380, "headwayMinutes": 10, "minutesBetweenStops": 4 },
+    { "id": "bus-14", "name": "Bus 14", "mode": "bus", "colorHex": "#F7B32B", "stopIDs": ["stop-market", "stop-civic", "stop-lantern", "stop-pier", "stop-ferry"], "firstDeparture": 320, "lastDeparture": 1400, "headwayMinutes": 15, "minutesBetweenStops": 5 },
+    { "id": "ferry-f1", "name": "Ferry F1", "mode": "ferry", "colorHex": "#3E92CC", "stopIDs": ["stop-ferry", "stop-pier"], "firstDeparture": 420, "lastDeparture": 1260, "headwayMinutes": 30, "minutesBetweenStops": 12 }
+  ],
+  "passOptions": [
+    { "kind": "single", "price": { "minorUnits": 275, "currencyCode": "USD" } },
+    { "kind": "day", "price": { "minorUnits": 700, "currencyCode": "USD" } },
+    { "kind": "week", "price": { "minorUnits": 2900, "currencyCode": "USD" } },
+    { "kind": "month", "price": { "minorUnits": 9000, "currencyCode": "USD" } }
+  ],
+  "passes": [
+    { "id": "pass-77", "ownerID": "user-1", "kind": "week", "validFrom": "2026-09-14T08:00:00Z", "validUntil": "2026-09-21T08:00:00Z", "price": { "minorUnits": 2900, "currencyCode": "USD" }, "transactionID": "tx-0800" }
+  ]
+}

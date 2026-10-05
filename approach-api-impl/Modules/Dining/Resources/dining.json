@@ -1,0 +1,465 @@
+{
+  "restaurants": [
+    {
+      "id": "rest-noodle-88",
+      "name": "Noodle Bar 88",
+      "cuisine": "noodles",
+      "priceLevel": 2,
+      "rating": 4.6,
+      "reviewCount": 812,
+      "placeID": "place-noodle-88",
+      "district": "Old Town",
+      "openingHours": "11 AM to 10 PM",
+      "acceptsReservations": true,
+      "highlights": [
+        "Hand-pulled noodles",
+        "Late kitchen on Fridays"
+      ]
+    },
+    {
+      "id": "rest-tidewater",
+      "name": "Tidewater Grill",
+      "cuisine": "seafood",
+      "priceLevel": 4,
+      "rating": 4.4,
+      "reviewCount": 530,
+      "placeID": "place-tidewater",
+      "district": "Harborfront",
+      "openingHours": "5 PM to 11 PM",
+      "acceptsReservations": true,
+      "highlights": [
+        "Harbor views",
+        "Raw bar"
+      ]
+    },
+    {
+      "id": "rest-greenleaf",
+      "name": "Greenleaf Kitchen",
+      "cuisine": "vegetarian",
+      "priceLevel": 2,
+      "rating": 4.7,
+      "reviewCount": 644,
+      "placeID": "place-greenleaf",
+      "district": "Riverside",
+      "openingHours": "8 AM to 9 PM",
+      "acceptsReservations": true,
+      "highlights": [
+        "All plant based options",
+        "Weekend brunch"
+      ]
+    },
+    {
+      "id": "rest-casa-luna",
+      "name": "Casa Luna",
+      "cuisine": "mexican",
+      "priceLevel": 2,
+      "rating": 4.3,
+      "reviewCount": 402,
+      "placeID": "place-noodle-88",
+      "district": "Old Town",
+      "openingHours": "12 PM to 11 PM",
+      "acceptsReservations": true,
+      "highlights": [
+        "Patio seating",
+        "Mezcal list"
+      ]
+    },
+    {
+      "id": "rest-forno",
+      "name": "Forno Rosso",
+      "cuisine": "italian",
+      "priceLevel": 3,
+      "rating": 4.5,
+      "reviewCount": 950,
+      "placeID": "place-greenleaf",
+      "district": "Riverside",
+      "openingHours": "5 PM to 10 PM",
+      "acceptsReservations": false,
+      "highlights": [
+        "Wood-fired pizza",
+        "Walk-ins only"
+      ]
+    },
+    {
+      "id": "rest-crumb",
+      "name": "Crumb and Co",
+      "cuisine": "bakery",
+      "priceLevel": 1,
+      "rating": 4.8,
+      "reviewCount": 1203,
+      "placeID": "place-noodle-88",
+      "district": "Old Town",
+      "openingHours": "7 AM to 3 PM",
+      "acceptsReservations": false,
+      "highlights": [
+        "Morning buns",
+        "Sells out by noon"
+      ]
+    },
+    {
+      "id": "rest-seoul-house",
+      "name": "Seoul House",
+      "cuisine": "korean",
+      "priceLevel": 3,
+      "rating": 4.2,
+      "reviewCount": 310,
+      "placeID": "place-tidewater",
+      "district": "Harborfront",
+      "openingHours": "11:30 AM to 10 PM",
+      "acceptsReservations": false,
+      "highlights": [
+        "Tabletop grills"
+      ]
+    }
+  ],
+  "menus": {
+    "rest-noodle-88": [
+      {
+        "title": "Noodles",
+        "items": [
+          {
+            "id": "n1",
+            "name": "Beef Lamian",
+            "details": "Hand-pulled noodles in an 8 hour broth",
+            "price": {
+              "minorUnits": 1600,
+              "currencyCode": "USD"
+            },
+            "dietary": []
+          },
+          {
+            "id": "n2",
+            "name": "Garden Dan Dan",
+            "details": "Sesame, chili oil, wilted greens",
+            "price": {
+              "minorUnits": 1400,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "vegan"
+            ]
+          },
+          {
+            "id": "n3",
+            "name": "Rice Noodle Pho",
+            "details": "Rice noodles, herbs, lime",
+            "price": {
+              "minorUnits": 1500,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "glutenFree",
+              "nutFree"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Small plates",
+        "items": [
+          {
+            "id": "n4",
+            "name": "Smashed Cucumber",
+            "details": "Garlic, black vinegar",
+            "price": {
+              "minorUnits": 700,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "vegan",
+              "glutenFree",
+              "nutFree"
+            ]
+          },
+          {
+            "id": "n5",
+            "name": "Pork Dumplings",
+            "details": "Six, with chili crisp",
+            "price": {
+              "minorUnits": 900,
+              "currencyCode": "USD"
+            },
+            "dietary": []
+          }
+        ]
+      }
+    ],
+    "rest-tidewater": [
+      {
+        "title": "Raw bar",
+        "items": [
+          {
+            "id": "t1",
+            "name": "Oysters",
+            "details": "Half dozen, mignonette",
+            "price": {
+              "minorUnits": 2100,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "glutenFree",
+              "nutFree"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Mains",
+        "items": [
+          {
+            "id": "t2",
+            "name": "Grilled Halibut",
+            "details": "Brown butter, capers",
+            "price": {
+              "minorUnits": 3800,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "glutenFree"
+            ]
+          },
+          {
+            "id": "t3",
+            "name": "Lobster Roll",
+            "details": "Toasted brioche",
+            "price": {
+              "minorUnits": 3200,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "nutFree"
+            ]
+          },
+          {
+            "id": "t4",
+            "name": "Roasted Squash",
+            "details": "Farro, pepitas",
+            "price": {
+              "minorUnits": 2400,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian"
+            ]
+          }
+        ]
+      }
+    ],
+    "rest-greenleaf": [
+      {
+        "title": "Bowls",
+        "items": [
+          {
+            "id": "g1",
+            "name": "Harvest Bowl",
+            "details": "Quinoa, roasted roots, tahini",
+            "price": {
+              "minorUnits": 1500,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "vegan",
+              "glutenFree"
+            ]
+          },
+          {
+            "id": "g2",
+            "name": "Green Curry",
+            "details": "Tofu, jasmine rice",
+            "price": {
+              "minorUnits": 1600,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "vegan",
+              "glutenFree",
+              "nutFree"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Brunch",
+        "items": [
+          {
+            "id": "g3",
+            "name": "Ricotta Pancakes",
+            "details": "Seasonal fruit",
+            "price": {
+              "minorUnits": 1300,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "nutFree"
+            ]
+          }
+        ]
+      }
+    ],
+    "rest-casa-luna": [
+      {
+        "title": "Tacos",
+        "items": [
+          {
+            "id": "c1",
+            "name": "Al Pastor",
+            "details": "Pineapple, onion, cilantro",
+            "price": {
+              "minorUnits": 1200,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "glutenFree",
+              "nutFree"
+            ]
+          },
+          {
+            "id": "c2",
+            "name": "Mushroom Asada",
+            "details": "Salsa macha",
+            "price": {
+              "minorUnits": 1100,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "vegan",
+              "glutenFree"
+            ]
+          }
+        ]
+      }
+    ],
+    "rest-forno": [
+      {
+        "title": "Pizza",
+        "items": [
+          {
+            "id": "f1",
+            "name": "Margherita",
+            "details": "San Marzano, fior di latte",
+            "price": {
+              "minorUnits": 1700,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "nutFree"
+            ]
+          },
+          {
+            "id": "f2",
+            "name": "Diavola",
+            "details": "Spicy salami, honey",
+            "price": {
+              "minorUnits": 1900,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "nutFree"
+            ]
+          }
+        ]
+      },
+      {
+        "title": "Pasta",
+        "items": [
+          {
+            "id": "f3",
+            "name": "Cacio e Pepe",
+            "details": "Tonnarelli, pecorino",
+            "price": {
+              "minorUnits": 1800,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian"
+            ]
+          }
+        ]
+      }
+    ],
+    "rest-crumb": [
+      {
+        "title": "Pastry",
+        "items": [
+          {
+            "id": "b1",
+            "name": "Morning Bun",
+            "details": "Orange, cardamom",
+            "price": {
+              "minorUnits": 500,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian"
+            ]
+          },
+          {
+            "id": "b2",
+            "name": "Almond Croissant",
+            "details": "Twice baked",
+            "price": {
+              "minorUnits": 600,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian"
+            ]
+          },
+          {
+            "id": "b3",
+            "name": "Gluten Free Brownie",
+            "details": "Dark chocolate",
+            "price": {
+              "minorUnits": 450,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "glutenFree",
+              "nutFree"
+            ]
+          }
+        ]
+      }
+    ],
+    "rest-seoul-house": [
+      {
+        "title": "Grill",
+        "items": [
+          {
+            "id": "s1",
+            "name": "Galbi",
+            "details": "Marinated short rib",
+            "price": {
+              "minorUnits": 3200,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "nutFree"
+            ]
+          },
+          {
+            "id": "s2",
+            "name": "Tofu Jjigae",
+            "details": "Silken tofu stew",
+            "price": {
+              "minorUnits": 1600,
+              "currencyCode": "USD"
+            },
+            "dietary": [
+              "vegetarian",
+              "glutenFree"
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

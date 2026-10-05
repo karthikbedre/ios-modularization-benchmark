@@ -1,21 +1,33 @@
+import CoreKit
 import DI
-import Map
+import Favorites
+import Identity
+import Places
 import SwiftUI
 import Wallet
 
 public enum TransitFeature {
     public static func register(in container: Container) {
-        container.register((any TransitService).self) {
-            makeService(container)
+        container.registerShared((any TransitService).self) {
+            LiveTransitService(
+                repository: BundleTransitRepository(loader: MockDataLoader()),
+                identity: container.resolve((any IdentityService).self),
+                wallet: container.resolve((any WalletService).self)
+            )
+        }
+        container.register(TransitEntryPoints.self) {
+            TransitEntryPoints { stopID in
+                AnyView(StopLookupScreen(stopID: stopID, service: container.resolve((any TransitService).self), ui: ui(container)))
+            }
         }
     }
 
     @MainActor
     public static func makeScreen(container: Container) -> some View {
-        TransitScreen(service: makeService(container))
+        TransitScreen(service: container.resolve((any TransitService).self), ui: ui(container))
     }
 
-    private static func makeService(_ container: Container) -> LiveTransitService {
-        LiveTransitService(wallet: container.resolve(), map: container.resolve())
+    private static func ui(_ container: Container) -> TransitUI {
+        TransitUI(places: container.resolve(PlacesEntryPoints.self), favorites: container.resolve(FavoritesEntryPoints.self))
     }
 }

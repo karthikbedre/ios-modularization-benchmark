@@ -1,0 +1,13 @@
+{
+  "id": "user-1",
+  "fullName": "Jordan Rivera",
+  "email": "jordan.rivera@example.com",
+  "phone": "555-0142",
+  "residentID": "CIV-204518",
+  "address": {
+    "street": "48 Lantern Street",
+    "district": "Riverside",
+    "postalCode": "10027"
+  },
+  "memberSince": "2021-03-14T09:00:00Z"
+}

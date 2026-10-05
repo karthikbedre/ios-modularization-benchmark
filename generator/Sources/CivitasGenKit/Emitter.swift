@@ -3,16 +3,27 @@ import Foundation
 public enum EmitterError: Error, CustomStringConvertible {
     case missingSources(String)
     case unsupportedFile(String)
+    case importViolations([String])
 
     public var description: String {
         switch self {
         case .missingSources(let path): "missing source directory \(path)"
         case .unsupportedFile(let path): "unsupported file in sources: \(path)"
+        case .importViolations(let violations): "undeclared imports:\n" + violations.joined(separator: "\n")
         }
     }
 }
 
+/// Which optional folders a generated module ended up with.
+struct ModuleContents {
+    var hasResources = false
+    var hasTests = false
+}
+
 /// Materializes one topology as a standalone Tuist project: manifests plus a copy of the canonical sources.
+///
+/// Files whose content is unchanged are left untouched, so their modification dates stay put and
+/// incremental builds only recompile what actually changed. That matters for the benchmarks.
 public struct Emitter {
     public var spec: Spec
     public var sourcesRoot: URL
@@ -22,55 +33,128 @@ public struct Emitter {
         self.sourcesRoot = sourcesRoot
     }
 
-    public func emit(_ graph: ModuleGraph, to output: URL) throws {
+    /// Generated paths relative to the output folder. Anything else there, like the Xcode project, is left alone.
+    static let generatedRoots = ["App", "Modules"]
+    static let generatedFiles = ["Project.swift", "Tuist.swift"]
+
+    @discardableResult
+    public func emit(_ graph: ModuleGraph, to output: URL) throws -> EmitReport {
+        let rewriter = ImportRewriter(domains: Set(spec.domainNames))
+        let checker = ImportChecker(graph: graph)
+        var violations: [String] = []
+        var planned: [String: Data] = [:]
+        var contents: [String: ModuleContents] = [:]
+
+        for module in graph.modules {
+            let moduleRoot = module.kind == .app ? "App" : "Modules/\(module.name)"
+            var moduleContents = ModuleContents()
+            for directory in module.sourceDirectories {
+                let source = sourcesRoot.appending(path: directory.source)
+                guard directoryExists(source) else {
+                    if directory.isOptional { continue }
+                    throw EmitterError.missingSources(source.path)
+                }
+                let destination = [moduleRoot, directory.role.rawValue, directory.destination]
+                    .filter { !$0.isEmpty }
+                    .joined(separator: "/")
+                // A test target is its own module, so it keeps importing the domain it tests.
+                let owningDomain = directory.role == .tests ? nil : module.domain
+                for relativePath in try files(in: source) {
+                    let file = source.appending(path: relativePath)
+                    let data: Data
+                    switch directory.role {
+                    case .sources, .tests:
+                        guard file.pathExtension == "swift" else { throw EmitterError.unsupportedFile(file.path) }
+                        let text = try String(contentsOf: file, encoding: .utf8)
+                        let output = graph.topology == .tree ? rewriter.rewriteForTree(text, owningDomain: owningDomain) : text
+                        let isTest = directory.role == .tests
+                        violations += checker.violations(
+                            in: output,
+                            file: "\(directory.source)/\(relativePath)",
+                            target: isTest ? "\(module.name)Tests" : module.name,
+                            allowed: Set(module.dependencies + (isTest ? [module.name] : []))
+                        )
+                        data = Data(output.utf8)
+                    case .resources:
+                        data = try Data(contentsOf: file)
+                    }
+                    planned["\(destination)/\(relativePath)"] = data
+                }
+                moduleContents.hasResources = moduleContents.hasResources || directory.role == .resources
+                moduleContents.hasTests = moduleContents.hasTests || directory.role == .tests
+            }
+            contents[module.name] = moduleContents
+        }
+
+        guard violations.isEmpty else { throw EmitterError.importViolations(violations) }
+
+        planned["Project.swift"] = Data(ProjectManifest.render(spec: spec, graph: graph, contents: contents).utf8)
+        planned["Tuist.swift"] = Data(ProjectManifest.renderTuistConfig().utf8)
+
+        return try sync(planned, into: output)
+    }
+
+    /// Writes changed files, deletes stale ones, and prunes folders left empty.
+    private func sync(_ planned: [String: Data], into output: URL) throws -> EmitReport {
         let fileManager = FileManager.default
-        for generated in ["App", "Modules", "Project.swift", "Tuist.swift"] {
-            let url = output.appending(path: generated)
-            if fileManager.fileExists(atPath: url.path) {
+        var report = EmitReport()
+
+        var existing: Set<String> = []
+        for root in Self.generatedRoots where directoryExists(output.appending(path: root)) {
+            existing.formUnion(try files(in: output.appending(path: root)).map { "\(root)/\($0)" })
+        }
+        existing.formUnion(Self.generatedFiles.filter { fileManager.fileExists(atPath: output.appending(path: $0).path) })
+
+        for (path, data) in planned.sorted(by: { $0.key < $1.key }) {
+            let url = output.appending(path: path)
+            if existing.contains(path), (try? Data(contentsOf: url)) == data {
+                report.unchanged += 1
+                continue
+            }
+            try fileManager.createDirectory(at: url.deletingLastPathComponent(), withIntermediateDirectories: true)
+            try data.write(to: url, options: .atomic)
+            report.written.append(path)
+        }
+
+        for path in existing.subtracting(planned.keys).sorted() {
+            try fileManager.removeItem(at: output.appending(path: path))
+            report.removed.append(path)
+        }
+        for root in Self.generatedRoots {
+            try pruneEmptyDirectories(in: output.appending(path: root))
+        }
+        return report
+    }
+
+    private func pruneEmptyDirectories(in directory: URL) throws {
+        guard directoryExists(directory) else { return }
+        let fileManager = FileManager.default
+        let subdirectories = try fileManager.subpathsOfDirectory(atPath: directory.path)
+            .filter { directoryExists(directory.appending(path: $0)) }
+            .sorted { $0.count > $1.count }
+        for subdirectory in subdirectories {
+            let url = directory.appending(path: subdirectory)
+            if try fileManager.contentsOfDirectory(atPath: url.path).allSatisfy({ $0 == ".DS_Store" }) {
                 try fileManager.removeItem(at: url)
             }
         }
-        try fileManager.createDirectory(at: output, withIntermediateDirectories: true)
-
-        let rewriter = ImportRewriter(domains: Set(spec.domainNames))
-        for module in graph.modules {
-            let moduleSources = module.kind == .app
-                ? output.appending(path: "App/Sources")
-                : output.appending(path: "Modules/\(module.name)/Sources")
-            for directory in module.sourceDirectories {
-                let destination = directory.destination.isEmpty
-                    ? moduleSources
-                    : moduleSources.appending(path: directory.destination)
-                try copySwiftFiles(from: sourcesRoot.appending(path: directory.source), to: destination) { text in
-                    graph.topology == .tree ? rewriter.rewriteForTree(text, owningDomain: module.domain) : text
-                }
-            }
-        }
-
-        try ProjectManifest.render(spec: spec, graph: graph)
-            .write(to: output.appending(path: "Project.swift"), atomically: true, encoding: .utf8)
-        try ProjectManifest.renderTuistConfig()
-            .write(to: output.appending(path: "Tuist.swift"), atomically: true, encoding: .utf8)
     }
 
-    private func copySwiftFiles(from source: URL, to destination: URL, transform: (String) -> String) throws {
-        let fileManager = FileManager.default
+    private func directoryExists(_ url: URL) -> Bool {
         var isDirectory: ObjCBool = false
-        guard fileManager.fileExists(atPath: source.path, isDirectory: &isDirectory), isDirectory.boolValue else {
-            throw EmitterError.missingSources(source.path)
-        }
-        let relativePaths = try fileManager.subpathsOfDirectory(atPath: source.path).sorted()
-        for relativePath in relativePaths {
-            let file = source.appending(path: relativePath)
-            var fileIsDirectory: ObjCBool = false
-            fileManager.fileExists(atPath: file.path, isDirectory: &fileIsDirectory)
-            if fileIsDirectory.boolValue || file.lastPathComponent == ".DS_Store" { continue }
-            guard file.pathExtension == "swift" else {
-                throw EmitterError.unsupportedFile(file.path)
-            }
-            let target = destination.appending(path: relativePath)
-            try fileManager.createDirectory(at: target.deletingLastPathComponent(), withIntermediateDirectories: true)
-            try transform(String(contentsOf: file, encoding: .utf8)).write(to: target, atomically: true, encoding: .utf8)
+        return FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) && isDirectory.boolValue
+    }
+
+    private func files(in directory: URL) throws -> [String] {
+        try FileManager.default.subpathsOfDirectory(atPath: directory.path).sorted().filter { relativePath in
+            let file = directory.appending(path: relativePath)
+            return !directoryExists(file) && file.lastPathComponent != ".DS_Store"
         }
     }
+}
+
+public struct EmitReport: Equatable, Sendable {
+    public var written: [String] = []
+    public var removed: [String] = []
+    public var unchanged = 0
 }

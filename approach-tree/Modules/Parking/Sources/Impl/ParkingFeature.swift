@@ -1,21 +1,28 @@
+import CoreKit
 import DI
-import Map
+import Identity
+import Notifications
+import Places
 import SwiftUI
 import Wallet
 
 public enum ParkingFeature {
     public static func register(in container: Container) {
-        container.register((any ParkingService).self) {
-            makeService(container)
+        container.registerShared((any ParkingService).self) {
+            LiveParkingService(
+                repository: BundleParkingRepository(loader: MockDataLoader()),
+                identity: container.resolve((any IdentityService).self),
+                wallet: container.resolve((any WalletService).self),
+                notifications: container.resolve((any NotificationsService).self)
+            )
+        }
+        container.register(ParkingEntryPoints.self) {
+            ParkingEntryPoints { AnyView(makeScreen(container: container)) }
         }
     }
 
     @MainActor
     public static func makeScreen(container: Container) -> some View {
-        ParkingScreen(service: makeService(container))
-    }
-
-    private static func makeService(_ container: Container) -> LiveParkingService {
-        LiveParkingService(wallet: container.resolve(), map: container.resolve())
+        ParkingScreen(service: container.resolve((any ParkingService).self), places: container.resolve(PlacesEntryPoints.self))
     }
 }

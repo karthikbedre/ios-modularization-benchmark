@@ -1,3 +1,5 @@
+import Agenda
+import CoreKit
 import DI
 import Identity
 import Notifications
@@ -5,17 +7,24 @@ import SwiftUI
 
 public enum ReservationsFeature {
     public static func register(in container: Container) {
-        container.register((any ReservationsService).self) {
-            makeService(container)
+        container.registerShared((any ReservationsService).self) {
+            LiveReservationsService(
+                repository: BundleReservationsRepository(loader: MockDataLoader()),
+                identity: container.resolve((any IdentityService).self),
+                notifications: container.resolve((any NotificationsService).self),
+                agenda: container.resolve((any AgendaService).self)
+            )
+        }
+        container.register(ReservationsEntryPoints.self) {
+            ReservationsEntryPoints(
+                booking: { venue in AnyView(BookingScreen(venue: venue, service: container.resolve((any ReservationsService).self))) },
+                myReservations: { AnyView(ReservationsScreen(service: container.resolve((any ReservationsService).self))) }
+            )
         }
     }
 
     @MainActor
     public static func makeScreen(container: Container) -> some View {
-        ReservationsScreen(service: makeService(container))
-    }
-
-    private static func makeService(_ container: Container) -> LiveReservationsService {
-        LiveReservationsService(identity: container.resolve(), notifications: container.resolve())
+        ReservationsScreen(service: container.resolve((any ReservationsService).self))
     }
 }

@@ -1,22 +1,38 @@
+import AgendaAPI
+import CoreKit
 import DI
 import IdentityAPI
+import NotificationsAPI
 import SwiftUI
 import TicketsAPI
 import WalletAPI
 
 public enum TicketsFeature {
     public static func register(in container: Container) {
-        container.register((any TicketsService).self) {
-            makeService(container)
+        container.registerShared((any TicketsService).self) {
+            LiveTicketsService(
+                repository: BundleTicketsRepository(loader: MockDataLoader()),
+                identity: container.resolve((any IdentityService).self),
+                notifications: container.resolve((any NotificationsService).self),
+                agenda: container.resolve((any AgendaService).self)
+            )
+        }
+        container.register(TicketsEntryPoints.self) {
+            TicketsEntryPoints(
+                purchase: { event in
+                    AnyView(PurchaseScreen(
+                        event: event,
+                        service: container.resolve((any TicketsService).self),
+                        wallet: container.resolve(WalletEntryPoints.self)
+                    ))
+                },
+                myTickets: { AnyView(MyTicketsScreen(service: container.resolve((any TicketsService).self))) }
+            )
         }
     }
 
     @MainActor
     public static func makeScreen(container: Container) -> some View {
-        TicketsScreen(service: makeService(container))
-    }
-
-    private static func makeService(_ container: Container) -> LiveTicketsService {
-        LiveTicketsService(wallet: container.resolve(), identity: container.resolve())
+        MyTicketsScreen(service: container.resolve((any TicketsService).self))
     }
 }

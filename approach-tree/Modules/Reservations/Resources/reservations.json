@@ -1,0 +1,16 @@
+{
+  "schedules": [
+    { "venueID": "rest-noodle-88", "venueName": "Noodle Bar 88", "kind": "dining", "openHour": 11, "closeHour": 22, "slotMinutes": 30, "durationMinutes": 90, "capacity": 6, "maxPartySize": 8 },
+    { "venueID": "rest-tidewater", "venueName": "Tidewater Grill", "kind": "dining", "openHour": 17, "closeHour": 23, "slotMinutes": 30, "durationMinutes": 120, "capacity": 10, "maxPartySize": 10 },
+    { "venueID": "rest-greenleaf", "venueName": "Greenleaf Kitchen", "kind": "dining", "openHour": 8, "closeHour": 21, "slotMinutes": 30, "durationMinutes": 60, "capacity": 4, "maxPartySize": 6 },
+    { "venueID": "rest-casa-luna", "venueName": "Casa Luna", "kind": "dining", "openHour": 12, "closeHour": 23, "slotMinutes": 30, "durationMinutes": 90, "capacity": 8, "maxPartySize": 12 },
+    { "venueID": "facility-tennis", "venueName": "Lantern Park Tennis Court 2", "kind": "facility", "openHour": 7, "closeHour": 21, "slotMinutes": 60, "durationMinutes": 60, "capacity": 1, "maxPartySize": 4 },
+    { "venueID": "facility-community-room", "venueName": "Riverside Community Room", "kind": "facility", "openHour": 9, "closeHour": 20, "slotMinutes": 120, "durationMinutes": 120, "capacity": 1, "maxPartySize": 40 }
+  ],
+  "reservations": [
+    { "id": "res-501", "ownerID": "user-1", "venueID": "rest-noodle-88", "venueName": "Noodle Bar 88", "kind": "dining", "start": "2026-10-10T02:30:00Z", "end": "2026-10-10T04:00:00Z", "partySize": 2, "notes": "Window seat if possible", "status": "confirmed", "confirmationCode": "NB8-4KQ" },
+    { "id": "res-502", "ownerID": "user-1", "venueID": "facility-tennis", "venueName": "Lantern Park Tennis Court 2", "kind": "facility", "start": "2026-10-11T14:00:00Z", "end": "2026-10-11T15:00:00Z", "partySize": 2, "notes": "", "status": "confirmed", "confirmationCode": "TEN-9PX" },
+    { "id": "res-490", "ownerID": "user-1", "venueID": "rest-tidewater", "venueName": "Tidewater Grill", "kind": "dining", "start": "2026-09-20T00:00:00Z", "end": "2026-09-20T02:00:00Z", "partySize": 4, "notes": "", "status": "confirmed", "confirmationCode": "TWG-2LM" },
+    { "id": "res-480", "ownerID": "user-1", "venueID": "rest-greenleaf", "venueName": "Greenleaf Kitchen", "kind": "dining", "start": "2026-09-12T16:00:00Z", "end": "2026-09-12T17:00:00Z", "partySize": 3, "notes": "", "status": "cancelled", "confirmationCode": "GLK-7RT" }
+  ]
+}

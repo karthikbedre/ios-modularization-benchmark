@@ -1,0 +1,20 @@
+{
+  "balance": { "minorUnits": 3850, "currencyCode": "USD" },
+  "paymentMethods": [
+    { "id": "pm-city", "kind": "cityCard", "label": "City Card", "last4": "0042", "isDefault": true },
+    { "id": "pm-debit", "kind": "debitCard", "label": "Harbor Bank Debit", "last4": "7781", "isDefault": false },
+    { "id": "pm-credit", "kind": "creditCard", "label": "Civic Rewards Visa", "last4": "3310", "isDefault": false }
+  ],
+  "transactions": [
+    { "id": "tx-1001", "merchant": "Metro Line 2", "category": "transit", "amount": { "minorUnits": -275, "currencyCode": "USD" }, "date": "2026-09-30T08:12:00Z", "paymentMethodID": "pm-city" },
+    { "id": "tx-1002", "merchant": "Riverside Garage", "category": "parking", "amount": { "minorUnits": -900, "currencyCode": "USD" }, "date": "2026-09-29T17:40:00Z", "paymentMethodID": "pm-city", "reference": "Zone R4" },
+    { "id": "tx-1003", "merchant": "City Card top up", "category": "topUp", "amount": { "minorUnits": 4000, "currencyCode": "USD" }, "date": "2026-09-28T10:05:00Z", "paymentMethodID": "pm-debit" },
+    { "id": "tx-1004", "merchant": "Harbor Amphitheater", "category": "tickets", "amount": { "minorUnits": -3600, "currencyCode": "USD" }, "date": "2026-09-27T19:30:00Z", "paymentMethodID": "pm-credit", "reference": "Autumn Jazz Night" },
+    { "id": "tx-1005", "merchant": "Noodle Bar 88", "category": "dining", "amount": { "minorUnits": -1845, "currencyCode": "USD" }, "date": "2026-09-27T12:15:00Z", "paymentMethodID": "pm-debit" },
+    { "id": "tx-1006", "merchant": "Metro Line 5", "category": "transit", "amount": { "minorUnits": -275, "currencyCode": "USD" }, "date": "2026-09-26T07:55:00Z", "paymentMethodID": "pm-city" },
+    { "id": "tx-1007", "merchant": "Water and Sewer", "category": "utilities", "amount": { "minorUnits": -6420, "currencyCode": "USD" }, "date": "2026-09-25T09:00:00Z", "paymentMethodID": "pm-debit", "reference": "Sept bill" },
+    { "id": "tx-1008", "merchant": "Old Town Meters", "category": "parking", "amount": { "minorUnits": -350, "currencyCode": "USD" }, "date": "2026-09-24T14:20:00Z", "paymentMethodID": "pm-city", "reference": "Zone O1" },
+    { "id": "tx-1009", "merchant": "Bike Share", "category": "transit", "amount": { "minorUnits": -150, "currencyCode": "USD" }, "date": "2026-09-23T18:02:00Z", "paymentMethodID": "pm-city" },
+    { "id": "tx-1010", "merchant": "Central Library Cafe", "category": "dining", "amount": { "minorUnits": -625, "currencyCode": "USD" }, "date": "2026-09-22T11:45:00Z", "paymentMethodID": "pm-credit" }
+  ]
+}

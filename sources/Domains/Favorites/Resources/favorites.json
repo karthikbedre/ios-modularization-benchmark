@@ -1,0 +1,7 @@
+[
+  { "id": "fav-1", "ownerID": "user-1", "kind": "restaurant", "itemID": "rest-noodle-88", "title": "Noodle Bar 88", "subtitle": "Noodles · Old Town", "addedAt": "2026-09-20T18:00:00Z" },
+  { "id": "fav-2", "ownerID": "user-1", "kind": "transitStop", "itemID": "stop-central", "title": "Central Station", "subtitle": "Lines 2, 5", "addedAt": "2026-08-02T08:00:00Z" },
+  { "id": "fav-3", "ownerID": "user-1", "kind": "event", "itemID": "event-jazz", "title": "Autumn Jazz Night", "subtitle": "Harbor Amphitheater", "addedAt": "2026-09-25T12:00:00Z" },
+  { "id": "fav-4", "ownerID": "user-1", "kind": "book", "itemID": "book-overstory", "title": "The Overstory", "subtitle": "Richard Powers", "addedAt": "2026-07-14T20:00:00Z" },
+  { "id": "fav-5", "ownerID": "user-2", "kind": "restaurant", "itemID": "rest-tidewater", "title": "Tidewater Grill", "subtitle": "Seafood · Harborfront", "addedAt": "2026-09-01T19:00:00Z" }
+]

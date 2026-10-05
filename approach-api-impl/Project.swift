@@ -4,61 +4,84 @@ import ProjectDescription
 // TUIST_LINKING=dynamic generates dynamic frameworks. Static frameworks are the default.
 let linking: Product = Environment.linking.getString(default: "static") == "dynamic" ? .framework : .staticFramework
 
-func module(_ name: String, dependencies: [String]) -> Target {
-    .target(
-        name: name,
-        destinations: .iOS,
-        product: linking,
-        bundleId: "io.github.karthikbedre.civitas.\(name)",
-        deploymentTargets: .iOS("17.0"),
-        sources: ["Modules/\(name)/Sources/**"],
-        dependencies: dependencies.map { .target(name: $0) }
-    )
+func module(_ name: String, dependencies: [String], resources: Bool = false, tests: Bool = false) -> [Target] {
+    var targets: [Target] = [
+        .target(
+            name: name,
+            destinations: .iOS,
+            product: linking,
+            bundleId: "io.github.karthikbedre.civitas.\(name)",
+            deploymentTargets: .iOS("17.0"),
+            sources: ["Modules/\(name)/Sources/**"],
+            resources: resources ? ["Modules/\(name)/Resources/**"] : nil,
+            dependencies: dependencies.map { .target(name: $0) }
+        ),
+    ]
+    if tests {
+        targets.append(.target(
+            name: "\(name)Tests",
+            destinations: .iOS,
+            product: .unitTests,
+            bundleId: "io.github.karthikbedre.civitas.\(name)Tests",
+            deploymentTargets: .iOS("17.0"),
+            sources: ["Modules/\(name)/Tests/**"],
+            dependencies: ([name] + dependencies).map { .target(name: $0) }
+        ))
+    }
+    return targets
 }
+
+var targets: [Target] = [
+    .target(
+        name: "Civitas",
+        destinations: .iOS,
+        product: .app,
+        bundleId: "io.github.karthikbedre.civitas",
+        deploymentTargets: .iOS("17.0"),
+        infoPlist: .extendingDefault(with: ["UILaunchScreen": [:]]),
+        sources: ["App/Sources/**"],
+        dependencies: ["DesignSystem", "DI", "IdentityAPI", "Identity", "PlacesAPI", "Places", "NotificationsAPI", "Notifications", "FavoritesAPI", "Favorites", "AgendaAPI", "Agenda", "WalletAPI", "Wallet", "TicketsAPI", "Tickets", "ReservationsAPI", "Reservations", "EventsAPI", "Events", "DiningAPI", "Dining", "ParkingAPI", "Parking", "TransitAPI", "Transit", "LibraryAPI", "Library", "ReportIssueAPI", "ReportIssue", "SearchAPI", "Search", "HomeAPI", "Home"].map { .target(name: $0) }
+    ),
+]
+targets += module("CoreKit", dependencies: [])
+targets += module("CoreModels", dependencies: ["CoreKit"])
+targets += module("DesignSystem", dependencies: ["CoreKit", "CoreModels"])
+targets += module("DI", dependencies: [], tests: true)
+targets += module("IdentityAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Identity", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "IdentityAPI"], resources: true, tests: true)
+targets += module("PlacesAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Places", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "PlacesAPI"], resources: true, tests: true)
+targets += module("NotificationsAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Notifications", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "NotificationsAPI", "IdentityAPI"], resources: true, tests: true)
+targets += module("FavoritesAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Favorites", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "FavoritesAPI", "IdentityAPI"], resources: true, tests: true)
+targets += module("AgendaAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Agenda", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "AgendaAPI", "IdentityAPI", "NotificationsAPI"], resources: true, tests: true)
+targets += module("WalletAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Wallet", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "WalletAPI", "IdentityAPI", "NotificationsAPI"], resources: true, tests: true)
+targets += module("TicketsAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Tickets", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "TicketsAPI", "WalletAPI", "IdentityAPI", "NotificationsAPI", "AgendaAPI"], resources: true, tests: true)
+targets += module("ReservationsAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Reservations", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "ReservationsAPI", "IdentityAPI", "NotificationsAPI", "AgendaAPI"], resources: true, tests: true)
+targets += module("EventsAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Events", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "EventsAPI", "TicketsAPI", "PlacesAPI", "FavoritesAPI", "AgendaAPI"], resources: true, tests: true)
+targets += module("DiningAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Dining", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "DiningAPI", "ReservationsAPI", "PlacesAPI", "FavoritesAPI"], resources: true, tests: true)
+targets += module("ParkingAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Parking", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "ParkingAPI", "IdentityAPI", "WalletAPI", "PlacesAPI", "NotificationsAPI"], resources: true, tests: true)
+targets += module("TransitAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Transit", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "TransitAPI", "IdentityAPI", "WalletAPI", "PlacesAPI", "FavoritesAPI"], resources: true, tests: true)
+targets += module("LibraryAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Library", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "LibraryAPI", "IdentityAPI", "NotificationsAPI", "AgendaAPI", "FavoritesAPI", "PlacesAPI"], resources: true, tests: true)
+targets += module("ReportIssueAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("ReportIssue", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "ReportIssueAPI", "IdentityAPI", "PlacesAPI", "NotificationsAPI"], resources: true, tests: true)
+targets += module("SearchAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Search", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "SearchAPI", "EventsAPI", "DiningAPI", "LibraryAPI", "TransitAPI", "PlacesAPI"], tests: true)
+targets += module("HomeAPI", dependencies: ["CoreKit", "CoreModels"])
+targets += module("Home", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "HomeAPI", "IdentityAPI", "NotificationsAPI", "AgendaAPI", "FavoritesAPI", "WalletAPI", "TicketsAPI", "ReservationsAPI", "EventsAPI", "DiningAPI", "ParkingAPI", "TransitAPI", "LibraryAPI", "ReportIssueAPI", "SearchAPI"], tests: true)
 
 let project = Project(
     name: "Civitas",
     settings: .settings(base: ["SWIFT_VERSION": "6.0"]),
-    targets: [
-        .target(
-            name: "Civitas",
-            destinations: .iOS,
-            product: .app,
-            bundleId: "io.github.karthikbedre.civitas",
-            deploymentTargets: .iOS("17.0"),
-            infoPlist: .extendingDefault(with: ["UILaunchScreen": [:]]),
-            sources: ["App/Sources/**"],
-            dependencies: ["DesignSystem", "DI", "IdentityAPI", "Identity", "MapAPI", "Map", "NotificationsAPI", "Notifications", "WalletAPI", "Wallet", "TicketsAPI", "Tickets", "EventsAPI", "Events", "ParkingAPI", "Parking", "TransitAPI", "Transit", "ReservationsAPI", "Reservations", "DiningAPI", "Dining", "LibraryAPI", "Library", "ReportIssueAPI", "ReportIssue", "HomeAPI", "Home"].map { .target(name: $0) }
-        ),
-        module("CoreKit", dependencies: []),
-        module("CoreModels", dependencies: ["CoreKit"]),
-        module("DesignSystem", dependencies: ["CoreKit", "CoreModels"]),
-        module("DI", dependencies: []),
-        module("IdentityAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Identity", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "IdentityAPI"]),
-        module("MapAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Map", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "MapAPI"]),
-        module("NotificationsAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Notifications", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "NotificationsAPI", "IdentityAPI"]),
-        module("WalletAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Wallet", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "WalletAPI", "IdentityAPI"]),
-        module("TicketsAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Tickets", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "TicketsAPI", "WalletAPI", "IdentityAPI"]),
-        module("EventsAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Events", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "EventsAPI", "TicketsAPI", "MapAPI"]),
-        module("ParkingAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Parking", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "ParkingAPI", "WalletAPI", "MapAPI"]),
-        module("TransitAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Transit", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "TransitAPI", "WalletAPI", "MapAPI"]),
-        module("ReservationsAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Reservations", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "ReservationsAPI", "IdentityAPI", "NotificationsAPI"]),
-        module("DiningAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Dining", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "DiningAPI", "ReservationsAPI", "MapAPI"]),
-        module("LibraryAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Library", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "LibraryAPI", "IdentityAPI", "NotificationsAPI"]),
-        module("ReportIssueAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("ReportIssue", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "ReportIssueAPI", "MapAPI", "NotificationsAPI"]),
-        module("HomeAPI", dependencies: ["CoreKit", "CoreModels"]),
-        module("Home", dependencies: ["CoreKit", "CoreModels", "DesignSystem", "DI", "HomeAPI", "IdentityAPI", "MapAPI", "NotificationsAPI", "WalletAPI", "TicketsAPI", "EventsAPI", "ParkingAPI", "TransitAPI", "ReservationsAPI", "DiningAPI", "LibraryAPI", "ReportIssueAPI"]),
-    ]
+    targets: targets
 )

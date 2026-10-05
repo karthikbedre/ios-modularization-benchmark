@@ -14,8 +14,8 @@ do {
     for topology in Topology.allCases {
         let graph = try ModuleGraph.make(spec: spec, topology: topology)
         let outputPath = "approach-\(topology.rawValue)"
-        try emitter.emit(graph, to: repo.appending(path: outputPath))
-        print("\(topology.rawValue): \(graph.modules.count) targets, \(graph.edgeCount) edges -> \(outputPath)")
+        let report = try emitter.emit(graph, to: repo.appending(path: outputPath))
+        print("\(topology.rawValue): \(graph.modules.count) targets, \(graph.edgeCount) edges -> \(outputPath) (\(report.written.count) written, \(report.removed.count) removed, \(report.unchanged) unchanged)")
     }
 } catch {
     FileHandle.standardError.write(Data("civitas-gen: \(error)\n".utf8))

@@ -4,10 +4,26 @@ public enum Topology: String, CaseIterable, Sendable {
 }
 
 public struct SourceDirectory: Equatable, Sendable {
+    public enum Role: String, Sendable {
+        case sources = "Sources"
+        case resources = "Resources"
+        case tests = "Tests"
+    }
+
     /// Path relative to the canonical `sources/` root.
     public var source: String
-    /// Path relative to the module's generated `Sources/` folder.
+    /// Path relative to the generated module folder for this role.
     public var destination: String
+    public var role: Role
+    /// Optional directories may be missing. The module then has no resources or tests.
+    public var isOptional: Bool
+
+    public init(source: String, destination: String = "", role: Role = .sources, isOptional: Bool = false) {
+        self.source = source
+        self.destination = destination
+        self.role = role
+        self.isOptional = isOptional
+    }
 }
 
 public struct Module: Equatable, Sendable {
@@ -79,7 +95,7 @@ extension ModuleGraph {
             name: spec.app,
             kind: .app,
             dependencies: appDependencies,
-            sourceDirectories: [SourceDirectory(source: "App", destination: "")]
+            sourceDirectories: [SourceDirectory(source: "App")]
         ))
 
         for core in spec.core {
@@ -87,20 +103,25 @@ extension ModuleGraph {
                 name: core.name,
                 kind: .core,
                 dependencies: core.dependsOn,
-                sourceDirectories: [SourceDirectory(source: "Core/\(core.name)", destination: "")]
+                sourceDirectories: [
+                    SourceDirectory(source: "Core/\(core.name)/Sources"),
+                    SourceDirectory(source: "Core/\(core.name)/Tests", role: .tests, isOptional: true),
+                ]
             ))
         }
 
         for domain in spec.domains {
             let api = SourceDirectory(source: "Domains/\(domain.name)/API", destination: "API")
             let impl = SourceDirectory(source: "Domains/\(domain.name)/Impl", destination: "Impl")
+            let resources = SourceDirectory(source: "Domains/\(domain.name)/Resources", role: .resources, isOptional: true)
+            let tests = SourceDirectory(source: "Domains/\(domain.name)/Tests", role: .tests, isOptional: true)
             switch topology {
             case .tree:
                 modules.append(Module(
                     name: domain.name,
                     kind: .impl,
                     dependencies: spec.domainCore + domain.dependsOn,
-                    sourceDirectories: [api, impl],
+                    sourceDirectories: [api, impl, resources, tests],
                     domain: domain.name
                 ))
             case .apiImpl:
@@ -115,7 +136,7 @@ extension ModuleGraph {
                     name: domain.name,
                     kind: .impl,
                     dependencies: spec.domainCore + [apiName(domain.name)] + domain.dependsOn.map(apiName),
-                    sourceDirectories: [impl],
+                    sourceDirectories: [impl, resources, tests],
                     domain: domain.name
                 ))
             }

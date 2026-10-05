@@ -1,9 +1,16 @@
 enum ProjectManifest {
-    static func render(spec: Spec, graph: ModuleGraph) -> String {
+    static func render(spec: Spec, graph: ModuleGraph, contents: [String: ModuleContents]) -> String {
         let app = graph.modules.first { $0.kind == .app }!
+        // One statement per module keeps manifest type-checking fast at hundreds of modules.
         let modules = graph.modules
             .filter { $0.kind != .app }
-            .map { #"        module("\#($0.name)", dependencies: \#(literal($0.dependencies))),"# }
+            .map { module in
+                let moduleContents = contents[module.name] ?? ModuleContents()
+                var arguments = [#""\#(module.name)""#, "dependencies: \(literal(module.dependencies))"]
+                if moduleContents.hasResources { arguments.append("resources: true") }
+                if moduleContents.hasTests { arguments.append("tests: true") }
+                return "targets += module(\(arguments.joined(separator: ", ")))"
+            }
             .joined(separator: "\n")
 
         return #"""
@@ -13,34 +20,51 @@ enum ProjectManifest {
         // TUIST_LINKING=dynamic generates dynamic frameworks. Static frameworks are the default.
         let linking: Product = Environment.linking.getString(default: "static") == "dynamic" ? .framework : .staticFramework
 
-        func module(_ name: String, dependencies: [String]) -> Target {
-            .target(
-                name: name,
-                destinations: .iOS,
-                product: linking,
-                bundleId: "\#(spec.bundleIdPrefix).\(name)",
-                deploymentTargets: .iOS("\#(spec.deploymentTarget)"),
-                sources: ["Modules/\(name)/Sources/**"],
-                dependencies: dependencies.map { .target(name: $0) }
-            )
+        func module(_ name: String, dependencies: [String], resources: Bool = false, tests: Bool = false) -> [Target] {
+            var targets: [Target] = [
+                .target(
+                    name: name,
+                    destinations: .iOS,
+                    product: linking,
+                    bundleId: "\#(spec.bundleIdPrefix).\(name)",
+                    deploymentTargets: .iOS("\#(spec.deploymentTarget)"),
+                    sources: ["Modules/\(name)/Sources/**"],
+                    resources: resources ? ["Modules/\(name)/Resources/**"] : nil,
+                    dependencies: dependencies.map { .target(name: $0) }
+                ),
+            ]
+            if tests {
+                targets.append(.target(
+                    name: "\(name)Tests",
+                    destinations: .iOS,
+                    product: .unitTests,
+                    bundleId: "\#(spec.bundleIdPrefix).\(name)Tests",
+                    deploymentTargets: .iOS("\#(spec.deploymentTarget)"),
+                    sources: ["Modules/\(name)/Tests/**"],
+                    dependencies: ([name] + dependencies).map { .target(name: $0) }
+                ))
+            }
+            return targets
         }
+
+        var targets: [Target] = [
+            .target(
+                name: "\#(app.name)",
+                destinations: .iOS,
+                product: .app,
+                bundleId: "\#(spec.bundleIdPrefix)",
+                deploymentTargets: .iOS("\#(spec.deploymentTarget)"),
+                infoPlist: .extendingDefault(with: ["UILaunchScreen": [:]]),
+                sources: ["App/Sources/**"],
+                dependencies: \#(literal(app.dependencies)).map { .target(name: $0) }
+            ),
+        ]
+        \#(modules)
 
         let project = Project(
             name: "\#(spec.app)",
             settings: .settings(base: ["SWIFT_VERSION": "\#(spec.swiftVersion)"]),
-            targets: [
-                .target(
-                    name: "\#(app.name)",
-                    destinations: .iOS,
-                    product: .app,
-                    bundleId: "\#(spec.bundleIdPrefix)",
-                    deploymentTargets: .iOS("\#(spec.deploymentTarget)"),
-                    infoPlist: .extendingDefault(with: ["UILaunchScreen": [:]]),
-                    sources: ["App/Sources/**"],
-                    dependencies: \#(literal(app.dependencies)).map { .target(name: $0) }
-                ),
-        \#(modules)
-            ]
+            targets: targets
         )
 
         """#

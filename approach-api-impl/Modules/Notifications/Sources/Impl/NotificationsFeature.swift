@@ -1,3 +1,4 @@
+import CoreKit
 import DI
 import IdentityAPI
 import NotificationsAPI
@@ -5,17 +6,19 @@ import SwiftUI
 
 public enum NotificationsFeature {
     public static func register(in container: Container) {
-        container.register((any NotificationsService).self) {
-            makeService(container)
+        container.registerShared((any NotificationsService).self) {
+            LiveNotificationsService(
+                repository: BundleNotificationsRepository(loader: MockDataLoader()),
+                identity: container.resolve((any IdentityService).self)
+            )
+        }
+        container.register(NotificationsEntryPoints.self) {
+            NotificationsEntryPoints { AnyView(InboxScreen(service: container.resolve((any NotificationsService).self))) }
         }
     }
 
     @MainActor
     public static func makeScreen(container: Container) -> some View {
-        NotificationsScreen(service: makeService(container))
-    }
-
-    private static func makeService(_ container: Container) -> LiveNotificationsService {
-        LiveNotificationsService(identity: container.resolve())
+        InboxScreen(service: container.resolve((any NotificationsService).self))
     }
 }

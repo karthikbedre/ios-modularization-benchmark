@@ -1,0 +1,13 @@
+{
+  "preferences": { "mutedCategories": [] },
+  "notifications": [
+    { "id": "n-101", "recipientID": "user-1", "title": "Street cleaning tomorrow", "body": "Lantern Street is swept Tuesday 8 to 10 AM. Move your car to avoid a ticket.", "date": "2026-10-04T07:30:00Z", "category": "cityAlert", "sourceDomain": "City", "isRead": false },
+    { "id": "n-102", "recipientID": "user-1", "title": "Payment received", "body": "You paid $9.00 at Riverside Garage, Zone R4.", "date": "2026-09-29T17:41:00Z", "category": "payment", "sourceDomain": "Wallet", "isRead": false },
+    { "id": "n-103", "recipientID": "user-1", "title": "Your hold is ready", "body": "The Overstory is waiting at Riverside Branch until Oct 8.", "date": "2026-10-03T15:00:00Z", "category": "library", "sourceDomain": "Library", "isRead": false },
+    { "id": "n-104", "recipientID": "user-1", "title": "Pothole report updated", "body": "Crews are scheduled to repair the pothole on 5th and Elm this week.", "date": "2026-10-02T11:20:00Z", "category": "report", "sourceDomain": "ReportIssue", "isRead": true },
+    { "id": "n-105", "recipientID": "user-1", "title": "Table confirmed", "body": "Noodle Bar 88, Sat 7:30 PM, party of 2.", "date": "2026-09-27T10:02:00Z", "category": "booking", "sourceDomain": "Reservations", "isRead": true },
+    { "id": "n-106", "recipientID": "user-1", "title": "Water main work on Harbor Way", "body": "Expect low water pressure from 1 to 4 PM on Thursday.", "date": "2026-09-25T09:00:00Z", "category": "cityAlert", "sourceDomain": "City", "isRead": true },
+    { "id": "n-107", "recipientID": "user-2", "title": "Not yours", "body": "Belongs to another resident and must never show up.", "date": "2026-10-04T08:00:00Z", "category": "payment", "sourceDomain": "Wallet", "isRead": false },
+    { "id": "n-108", "recipientID": "user-1", "title": "Library book due soon", "body": "Braiding Sweetgrass is due in 3 days.", "date": "2026-12-01T09:00:00Z", "category": "reminder", "sourceDomain": "Library", "isRead": false }
+  ]
+}

@@ -1,0 +1,34 @@
+[
+  {
+    "id": "issue-2041", "reporterID": "user-1", "category": "pothole", "details": "Deep pothole in the northbound bike lane, about a foot wide.",
+    "location": { "latitude": 40.7162, "longitude": -74.0031 }, "addressHint": "5th and Elm", "createdAt": "2026-09-28T08:15:00Z",
+    "updates": [
+      { "date": "2026-09-28T08:15:00Z", "status": "submitted", "note": "Report received." },
+      { "date": "2026-09-28T13:00:00Z", "status": "acknowledged", "note": "Assigned to Streets and Sanitation." },
+      { "date": "2026-10-02T11:20:00Z", "status": "scheduled", "note": "Crew scheduled for this week." }
+    ],
+    "supporterIDs": ["user-4", "user-7"]
+  },
+  {
+    "id": "issue-1980", "reporterID": "user-1", "category": "streetlight", "details": "Streetlight flickering and then out most of the night.",
+    "location": { "latitude": 40.7206, "longitude": -74.0090 }, "addressHint": "River Road near the boat launch", "createdAt": "2026-09-10T22:40:00Z",
+    "updates": [
+      { "date": "2026-09-10T22:40:00Z", "status": "submitted", "note": "Report received." },
+      { "date": "2026-09-11T09:00:00Z", "status": "acknowledged", "note": "Sent to the utility." },
+      { "date": "2026-09-15T16:30:00Z", "status": "resolved", "note": "Bulb and photocell replaced." }
+    ],
+    "supporterIDs": []
+  },
+  {
+    "id": "issue-2050", "reporterID": "user-3", "category": "graffiti", "details": "Large tag on the library's east wall.",
+    "location": { "latitude": 40.7153, "longitude": -74.0022 }, "addressHint": "Central Library, Civic Plaza side", "createdAt": "2026-10-03T10:00:00Z",
+    "updates": [ { "date": "2026-10-03T10:00:00Z", "status": "submitted", "note": "Report received." } ],
+    "supporterIDs": ["user-5"]
+  },
+  {
+    "id": "issue-2052", "reporterID": "user-6", "category": "litter", "details": "Couch and mattress dumped on the sidewalk.",
+    "location": { "latitude": 40.7140, "longitude": -74.0060 }, "addressHint": "Lantern Street at the park entrance", "createdAt": "2026-10-04T07:10:00Z",
+    "updates": [ { "date": "2026-10-04T07:10:00Z", "status": "submitted", "note": "Report received." } ],
+    "supporterIDs": []
+  }
+]
