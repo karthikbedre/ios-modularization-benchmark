@@ -24,7 +24,7 @@ paper/                       paper sources (planned)
 
 ## Requirements
 
-- Xcode 26.3
+- Xcode 27.2
 - Tuist 4.210.0 (pinned in `mise.toml`)
 
 ## Generate and build

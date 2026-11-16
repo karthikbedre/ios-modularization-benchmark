@@ -16,6 +16,14 @@ if [ -n "$(git status --porcelain -- sources spec generator bench)" ]; then
     [ -z "${DRY:-}" ] && exit 1
 fi
 
+# Derived data for one size can reach several GB per topology. It is rebuilt cold when needed.
+DERIVED="$HOME/Library/Developer/CivitasBench"
+free_size() {
+    local folder=$1 linking=$2
+    if [ -n "${DRY:-}" ]; then echo "free derived data: $folder $linking"; return; fi
+    rm -rf "${DERIVED:?}/${folder:?}/tree-${linking:?}" "${DERIVED:?}/${folder:?}/api-impl-${linking:?}"
+}
+
 run() {
     local name=$1 root=$2 linking=$3 scenario=$4; shift 4
     local base="$OUT/$name-$scenario"
@@ -32,13 +40,19 @@ for n in 25 50 100 200; do
 done
 
 # Long builds vary little run to run (pilot CV 0.5 to 3.5% above 10 s), so large sizes use fewer runs.
+# Each size's derived data is freed as soon as that size is done, so only one size is on disk at a time.
 for scenario in $SCENARIOS; do run static-16 . static "$scenario"; done
+free_size ios-modularization-benchmark static
 for n in 25 50; do
     for scenario in $SCENARIOS; do run "static-$n" "build/scale/$n" static "$scenario"; done
+    free_size "$n" static
 done
 for n in 100 200; do
     for scenario in $SCENARIOS; do run "static-$n" "build/scale/$n" static "$scenario" --clean-runs 5 --incremental-runs 10; done
+    free_size "$n" static
 done
 for scenario in $SCENARIOS; do run dynamic-16 . dynamic "$scenario"; done
+free_size ios-modularization-benchmark dynamic
 for scenario in $SCENARIOS; do run dynamic-100 build/scale/100 dynamic "$scenario" --clean-runs 5 --incremental-runs 10; done
+free_size 100 dynamic
 echo "matrix complete: $OUT"

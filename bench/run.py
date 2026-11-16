@@ -33,6 +33,7 @@ Usage
 import argparse
 import csv
 import datetime
+import gzip
 import json
 import os
 import platform
@@ -58,7 +59,7 @@ PROBE_END = "// bench-probe-end"
 # One line per compiled file. Batch lines ("Compiling\ A.swift, B.swift") are skipped so files are not counted twice.
 COMPILE_LINE = re.compile(r"^SwiftCompile \S+ \S+ (/\S+\.swift) \(in target '([^']+)' from project")
 FIELDS = ["timestamp", "topology", "linking", "scenario", "hub", "run", "seconds", "generate_seconds",
-          "compiled_targets", "compiled_files", "targets", "exit_code"]
+          "compiled_targets", "compiled_files", "targets", "exit_code", "power"]
 
 
 def project_dir(topology):
@@ -96,6 +97,22 @@ def set_probe(path, body):
     path.write_text(text + block)
 
 
+def power_source():
+    """'ac' or 'battery'. Desktops without a battery report AC."""
+    output = subprocess.run(["pmset", "-g", "batt"], capture_output=True, text=True).stdout
+    return "battery" if "Battery Power" in output else "ac"
+
+
+def wait_for_ac():
+    """Timing on battery is not comparable, so a timed build only starts on AC power."""
+    if power_source() == "ac":
+        return
+    print("on battery power, waiting for the charger before the next timed build", flush=True)
+    while power_source() != "ac":
+        time.sleep(30)
+    print("charger connected, resuming", flush=True)
+
+
 def generate(topology, linking):
     env = dict(os.environ, TUIST_LINKING=linking)
     started = time.monotonic()
@@ -117,11 +134,16 @@ def build(topology, derived_data, log_path):
         code = subprocess.run(command, cwd=project_dir(topology), stdout=log, stderr=subprocess.STDOUT).returncode
         seconds = time.monotonic() - started
     targets, files = set(), 0
-    for line in Path(log_path).read_text(errors="replace").splitlines():
+    text = Path(log_path).read_text(errors="replace")
+    for line in text.splitlines():
         match = COMPILE_LINE.match(line)
         if match:
             files += 1
             targets.add(match.group(2))
+    # Logs are kept for auditing but are large and repetitive, so they are stored compressed.
+    with gzip.open(f"{log_path}.gz", "wt") as compressed:
+        compressed.write(text)
+    Path(log_path).unlink()
     return seconds, code, sorted(targets), files
 
 
@@ -145,6 +167,7 @@ def environment(linking):
         "commit": run("git", "-C", str(REPO), "rev-parse", "HEAD"),
         "dirty": bool(run("git", "-C", str(REPO), "status", "--porcelain", "--", "sources", "spec", "generator")),
         "linking": linking,
+        "power_mode": next((line.split()[-1] for line in run("pmset", "-g").splitlines() if line.strip().startswith("powermode")), ""),
         "root": str(ROOT.relative_to(REPO)) if ROOT.is_relative_to(REPO) else str(ROOT),
     }
 
@@ -187,12 +210,14 @@ def run_series(args, recorder, derived, scenario, hub, runs):
                 generate_seconds = generate(topology, args.linking)
             elif scenario != "noop":
                 set_probe(probe_file(topology, scenario, hub), probe_body(scenario, run))
+            wait_for_ac()
             time.sleep(args.cooldown)
             log = recorder.logs / f"{scenario}-{hub}-{topology}-{args.linking}-{run}.log"
             seconds, code, targets, files = build(topology, derived[topology], log)
             recorder.record(topology=topology, linking=args.linking, scenario=scenario, hub=hub, run=run,
                             seconds=f"{seconds:.2f}", generate_seconds=f"{generate_seconds:.2f}",
-                            compiled_targets=len(targets), compiled_files=files, targets=" ".join(targets), exit_code=code)
+                            compiled_targets=len(targets), compiled_files=files, targets=" ".join(targets), exit_code=code,
+                            power=power_source())
             print(f"{scenario:12} {hub:13} {topology:8} run {run:2}: {seconds:7.2f}s  {len(targets):2} targets  {files:3} files"
                   + ("" if code == 0 else f"  FAILED ({code}), see {log}"), flush=True)
 
