@@ -58,6 +58,8 @@ PROBE_BEGIN = "// bench-probe-begin"
 PROBE_END = "// bench-probe-end"
 # One line per compiled file. Batch lines ("Compiling\ A.swift, B.swift") are skipped so files are not counted twice.
 COMPILE_LINE = re.compile(r"^SwiftCompile \S+ \S+ (/\S+\.swift) \(in target '([^']+)' from project")
+# Exit code for a build that hung, so run_matrix.sh can restart the configuration.
+HUNG_EXIT = 3
 FIELDS = ["timestamp", "topology", "linking", "scenario", "hub", "run", "seconds", "generate_seconds",
           "compiled_targets", "compiled_files", "targets", "exit_code", "power"]
 
@@ -121,7 +123,11 @@ def generate(topology, linking):
     return time.monotonic() - started
 
 
-def build(topology, derived_data, log_path):
+class BuildHung(Exception):
+    pass
+
+
+def build(topology, derived_data, timeout, log_path):
     command = [
         "xcodebuild", "-project", "Civitas.xcodeproj", "-scheme", "Civitas",
         "-configuration", "Debug", "-destination", "generic/platform=iOS Simulator",
@@ -129,9 +135,19 @@ def build(topology, derived_data, log_path):
         # Indexing runs alongside the build in Xcode and adds noise, so it is off for every run.
         "COMPILER_INDEX_STORE_ENABLE=NO",
     ]
+    hung = False
     with open(log_path, "w") as log:
         started = time.monotonic()
-        code = subprocess.run(command, cwd=project_dir(topology), stdout=log, stderr=subprocess.STDOUT).returncode
+        process = subprocess.Popen(command, cwd=project_dir(topology), stdout=log, stderr=subprocess.STDOUT)
+        try:
+            code = process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            # Xcode 27.2 build service deadlocked once at 0% CPU (2026-11-16). Kill it so the next build starts fresh.
+            hung = True
+            process.kill()
+            process.wait()
+            subprocess.run(["pkill", "-9", "-f", "SWBBuildService"], check=False)
+            code = -1
         seconds = time.monotonic() - started
     targets, files = set(), 0
     text = Path(log_path).read_text(errors="replace")
@@ -144,6 +160,8 @@ def build(topology, derived_data, log_path):
     with gzip.open(f"{log_path}.gz", "wt") as compressed:
         compressed.write(text)
     Path(log_path).unlink()
+    if hung:
+        raise BuildHung(f"build hung for {seconds:.0f}s, see {log_path}.gz")
     return seconds, code, sorted(targets), files
 
 
@@ -197,7 +215,7 @@ def run_series(args, recorder, derived, scenario, hub, runs):
             set_probe(probe_file(topology, scenario, hub), probe_body(scenario, 0))
     if scenario != "clean":
         for topology in topologies:
-            build(topology, derived[topology], recorder.logs / f"warmup-{topology}-{scenario}-{hub}.log")
+            build(topology, derived[topology], args.build_timeout, recorder.logs / f"warmup-{topology}-{scenario}-{hub}.log")
 
     for run in runs:
         for topology in topologies:
@@ -213,7 +231,7 @@ def run_series(args, recorder, derived, scenario, hub, runs):
             wait_for_ac()
             time.sleep(args.cooldown)
             log = recorder.logs / f"{scenario}-{hub}-{topology}-{args.linking}-{run}.log"
-            seconds, code, targets, files = build(topology, derived[topology], log)
+            seconds, code, targets, files = build(topology, derived[topology], args.build_timeout, log)
             recorder.record(topology=topology, linking=args.linking, scenario=scenario, hub=hub, run=run,
                             seconds=f"{seconds:.2f}", generate_seconds=f"{generate_seconds:.2f}",
                             compiled_targets=len(targets), compiled_files=files, targets=" ".join(targets), exit_code=code,
@@ -229,7 +247,7 @@ def run_series(args, recorder, derived, scenario, hub, runs):
                 generate(topology, args.linking)
             else:
                 set_probe(probe_file(topology, scenario, hub), None)
-            build(topology, derived[topology], recorder.logs / f"restore-{topology}-{scenario}-{hub}.log")
+            build(topology, derived[topology], args.build_timeout, recorder.logs / f"restore-{topology}-{scenario}-{hub}.log")
 
 
 def main():
@@ -243,6 +261,8 @@ def main():
     parser.add_argument("--incremental-runs", type=int, default=DEFAULT_INCREMENTAL_RUNS)
     parser.add_argument("--first-run", type=int, default=1, help="run number to start from, to resume a series")
     parser.add_argument("--cooldown", type=float, default=5.0, help="seconds to wait between timed builds")
+    parser.add_argument("--build-timeout", type=float, default=1800.0,
+                        help="seconds before a build counts as hung; the series then stops with exit code 3")
     parser.add_argument("--out", required=True, type=Path)
     parser.add_argument("--derived-data", type=Path, default=Path.home() / "Library/Developer/CivitasBench")
     parser.add_argument("--root", type=Path, default=REPO, help="folder holding approach-<topology>, such as build/scale/100")
@@ -263,11 +283,24 @@ def main():
         seconds = generate(topology, args.linking)
         print(f"generated {topology} ({args.linking}) in {seconds:.1f}s", flush=True)
 
-    for scenario in scenarios:
-        count = args.runs or (args.clean_runs if scenario == "clean" else args.incremental_runs)
-        runs = range(args.first_run, args.first_run + count)
-        for hub in (hubs if scenario in CHANGE_SCENARIOS else ["-"]):
-            run_series(args, recorder, derived, scenario, hub, runs)
+    try:
+        for scenario in scenarios:
+            count = args.runs or (args.clean_runs if scenario == "clean" else args.incremental_runs)
+            runs = range(args.first_run, args.first_run + count)
+            for hub in (hubs if scenario in CHANGE_SCENARIOS else ["-"]):
+                run_series(args, recorder, derived, scenario, hub, runs)
+    except BuildHung as error:
+        # Leave the generated sources as they were, so a restart begins from a clean project.
+        for topology in args.topologies:
+            for hub in hubs:
+                for scenario in CHANGE_SCENARIOS - {"add-file"}:
+                    path = probe_file(topology, scenario, hub)
+                    if path.exists():
+                        set_probe(path, None)
+                for added in (project_dir(topology) / "Modules" / hub).glob("Sources/Impl/Domain/BenchAdded*.swift"):
+                    added.unlink()
+        print(f"HUNG: {error}", flush=True)
+        sys.exit(HUNG_EXIT)
 
 
 if __name__ == "__main__":

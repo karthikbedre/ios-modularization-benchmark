@@ -30,9 +30,20 @@ run() {
     if [ -f "$base.done" ]; then echo "skip $name $scenario"; return; fi
     local command=(bench/run.py --root "$root" --linking "$linking" --scenarios "$scenario" --out "$base.csv" "$@")
     if [ -n "${DRY:-}" ]; then echo "${command[*]}"; return; fi
-    rm -f "$base.csv"
-    "${command[@]}"
-    touch "$base.done"
+    local folder attempt code
+    folder=$([ "$root" = . ] && echo ios-modularization-benchmark || basename "$root")
+    for attempt in 1 2 3; do
+        rm -f "$base.csv"
+        code=0
+        "${command[@]}" || code=$?
+        if [ "$code" -eq 0 ]; then touch "$base.done"; return; fi
+        # Exit 3 means a build hung and was killed. Start the configuration over from cold derived data.
+        if [ "$code" -ne 3 ]; then echo "FAILED: $name $scenario exited $code" >&2; exit "$code"; fi
+        echo "restarting $name $scenario after a hung build (attempt $attempt)"
+        rm -rf "${DERIVED:?}/${folder:?}/tree-${linking:?}" "${DERIVED:?}/${folder:?}/api-impl-${linking:?}"
+    done
+    echo "FAILED: $name $scenario hung three times" >&2
+    exit 3
 }
 
 for n in 25 50 100 200; do
