@@ -1,0 +1,2 @@
+timestamp,config,phase,topology,scenario,hub,run,attempt,seconds_before_kill
+2026-11-16T21:22:36+00:00,static-100-clean,timed,tree,clean,-,1,1,135
