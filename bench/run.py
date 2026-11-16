@@ -243,8 +243,9 @@ def environment(linking):
 class Recorder:
     def __init__(self, path, linking):
         path.parent.mkdir(parents=True, exist_ok=True)
-        self.logs = path.parent / "logs"
-        self.logs.mkdir(exist_ok=True)
+        # One log folder per configuration. Log names do not include N, so a shared folder would mix sizes.
+        self.logs = path.parent / "logs" / path.stem
+        self.logs.mkdir(parents=True, exist_ok=True)
         path.with_suffix(".env.json").write_text(json.dumps(environment(linking), indent=2) + "\n")
         new_file = not path.exists()
         self.file = open(path, "a", newline="")
