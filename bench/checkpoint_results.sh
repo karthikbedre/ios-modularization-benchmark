@@ -13,7 +13,7 @@ for done in "$OUT"/*.done; do
     base=${done%.done}
     git add -- "$base.csv" "$base.env.json"
 done
-[ -f "$OUT/README.md" ] && git add -- "$OUT/README.md"
+for extra in README.md hangs.csv; do [ -f "$OUT/$extra" ] && git add -- "$OUT/$extra"; done
 
 if git diff --cached --quiet; then echo "checkpoint: nothing new"; exit 0; fi
 git commit -q -m "$MESSAGE"
