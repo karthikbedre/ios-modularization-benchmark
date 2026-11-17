@@ -1,3 +1,7 @@
-# Excluded: static N=25 api-change, slow after a killed build
+# Set aside: static N=25 api-change, first full run
 
-This configuration was restarted on 2026-11-16 at about 10:00 PST after a build hung for 30 minutes and was killed. The restarted series ran about twice as slow as expected for every hub and both topologies, with the same compiled files. Notifications tree took 23.4 s (median) against 12.0 s for the runs before the hang and 19.3 s at N=50. The cause is not known. The likely suspect is state left over from the killed build. The configuration was run again after the full matrix finished, and that run is the one in the parent folder. These rows are kept for transparency and are not used in the analysis.
+This configuration was restarted on 2026-11-16 at about 10:00 PST after a build hung for 30 minutes and was killed. Its timings looked about twice as slow as the two runs completed before the hang (Notifications tree 23.4 s against about 12.0 s, with the same 360 compiled files), so it was set aside and run again after the full matrix finished.
+
+The rerun reproduced these timings within 0 to 3 percent for every hub and topology, with identical compiled file counts. So the slowness was not caused by the killed build, and these rows are valid. The rerun in the parent folder is the one used in the analysis, and this folder is kept as a replication.
+
+Open question: the two pre-hang runs (about 12 s for Notifications tree, about 5.9 s for api-impl) were discarded when the configuration restarted and are the outliers. Their logs are in logs/ on the benchmark Mac. A possible cause is a different warm-up state before the hang.
