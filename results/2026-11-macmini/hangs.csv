@@ -1,0 +1,7 @@
+timestamp,config,phase,topology,scenario,hub,run,attempt,seconds_before_kill
+2026-11-16T21:22:36+00:00,static-100-clean,timed,tree,clean,-,1,1,135
+2026-11-17T00:31:09+00:00,static-200-private-decl,timed,tree,private-decl,Notifications,9,1,135
+2026-11-17T01:07:47+00:00,static-200-public-impl,timed,tree,public-impl,Identity,9,1,166
+2026-11-17T02:13:33+00:00,static-200-api-change,timed,tree,api-change,Identity,2,1,150
+2026-11-17T05:50:40+00:00,dynamic-100-private-decl,restore,tree,private-decl,Identity,0,1,150
+2026-11-17T06:20:36+00:00,dynamic-100-public-impl,timed,tree,public-impl,Identity,4,1,135

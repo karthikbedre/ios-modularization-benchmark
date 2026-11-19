@@ -13,3 +13,11 @@ xcuserdata/
 
 # Scaled builds from civitas-gen --domains N. Regenerated from the spec and seed.
 build/
+
+# Benchmark run state. Raw build logs, the console log and resume markers stay local.
+results/*/logs/
+results/*/matrix.out
+results/*/*.done
+
+# Analysis output, rebuilt from results/ by analysis/analyze.py
+analysis/out/

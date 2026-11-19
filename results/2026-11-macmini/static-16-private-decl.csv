@@ -1,0 +1,121 @@
+timestamp,topology,linking,scenario,hub,run,seconds,generate_seconds,compiled_targets,compiled_files,targets,exit_code,power
+2026-11-16T08:50:20+00:00,tree,static,private-decl,Identity,1,7.41,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:50:28+00:00,api-impl,static,private-decl,Identity,1,2.84,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:50:40+00:00,tree,static,private-decl,Identity,2,7.70,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:50:48+00:00,api-impl,static,private-decl,Identity,2,2.85,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:51:01+00:00,tree,static,private-decl,Identity,3,7.25,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:51:09+00:00,api-impl,static,private-decl,Identity,3,2.91,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:51:21+00:00,tree,static,private-decl,Identity,4,7.43,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:51:29+00:00,api-impl,static,private-decl,Identity,4,2.73,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:51:41+00:00,tree,static,private-decl,Identity,5,7.23,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:51:49+00:00,api-impl,static,private-decl,Identity,5,2.89,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:52:01+00:00,tree,static,private-decl,Identity,6,7.25,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:52:09+00:00,api-impl,static,private-decl,Identity,6,2.81,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:52:21+00:00,tree,static,private-decl,Identity,7,7.14,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:52:29+00:00,api-impl,static,private-decl,Identity,7,2.63,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:52:41+00:00,tree,static,private-decl,Identity,8,7.32,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:52:49+00:00,api-impl,static,private-decl,Identity,8,2.80,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:53:02+00:00,tree,static,private-decl,Identity,9,7.95,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:53:10+00:00,api-impl,static,private-decl,Identity,9,2.82,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:53:22+00:00,tree,static,private-decl,Identity,10,7.46,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:53:30+00:00,api-impl,static,private-decl,Identity,10,2.83,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:53:43+00:00,tree,static,private-decl,Identity,11,7.47,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:53:51+00:00,api-impl,static,private-decl,Identity,11,3.02,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:54:03+00:00,tree,static,private-decl,Identity,12,7.65,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:54:11+00:00,api-impl,static,private-decl,Identity,12,3.10,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:54:24+00:00,tree,static,private-decl,Identity,13,7.56,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:54:32+00:00,api-impl,static,private-decl,Identity,13,3.24,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:54:45+00:00,tree,static,private-decl,Identity,14,7.54,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:54:53+00:00,api-impl,static,private-decl,Identity,14,2.96,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:55:05+00:00,tree,static,private-decl,Identity,15,7.44,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:55:14+00:00,api-impl,static,private-decl,Identity,15,3.18,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:55:26+00:00,tree,static,private-decl,Identity,16,7.40,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:55:34+00:00,api-impl,static,private-decl,Identity,16,2.93,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:55:47+00:00,tree,static,private-decl,Identity,17,7.64,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:55:55+00:00,api-impl,static,private-decl,Identity,17,3.21,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:56:07+00:00,tree,static,private-decl,Identity,18,7.61,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:56:15+00:00,api-impl,static,private-decl,Identity,18,2.95,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:56:28+00:00,tree,static,private-decl,Identity,19,7.74,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:56:36+00:00,api-impl,static,private-decl,Identity,19,3.02,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:56:49+00:00,tree,static,private-decl,Identity,20,7.64,0.00,15,100,Agenda Civitas Dining Events Favorites Home Identity Library Notifications Parking ReportIssue Reservations Tickets Transit Wallet,0,ac
+2026-11-16T08:56:57+00:00,api-impl,static,private-decl,Identity,20,2.99,0.00,2,8,Civitas Identity,0,ac
+2026-11-16T08:57:34+00:00,tree,static,private-decl,Notifications,1,9.15,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:57:42+00:00,api-impl,static,private-decl,Notifications,1,2.86,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T08:57:56+00:00,tree,static,private-decl,Notifications,2,9.36,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:58:04+00:00,api-impl,static,private-decl,Notifications,2,2.89,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T08:58:18+00:00,tree,static,private-decl,Notifications,3,9.25,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:58:27+00:00,api-impl,static,private-decl,Notifications,3,3.07,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T08:58:41+00:00,tree,static,private-decl,Notifications,4,9.28,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:58:49+00:00,api-impl,static,private-decl,Notifications,4,3.16,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T08:59:03+00:00,tree,static,private-decl,Notifications,5,8.99,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:59:11+00:00,api-impl,static,private-decl,Notifications,5,2.75,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T08:59:25+00:00,tree,static,private-decl,Notifications,6,9.10,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:59:33+00:00,api-impl,static,private-decl,Notifications,6,3.03,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T08:59:47+00:00,tree,static,private-decl,Notifications,7,9.37,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T08:59:56+00:00,api-impl,static,private-decl,Notifications,7,3.29,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:00:10+00:00,tree,static,private-decl,Notifications,8,9.18,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:00:18+00:00,api-impl,static,private-decl,Notifications,8,2.94,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:00:32+00:00,tree,static,private-decl,Notifications,9,9.07,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:00:40+00:00,api-impl,static,private-decl,Notifications,9,2.77,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:00:54+00:00,tree,static,private-decl,Notifications,10,9.06,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:01:02+00:00,api-impl,static,private-decl,Notifications,10,2.94,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:01:16+00:00,tree,static,private-decl,Notifications,11,8.99,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:01:24+00:00,api-impl,static,private-decl,Notifications,11,2.96,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:01:38+00:00,tree,static,private-decl,Notifications,12,9.03,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:01:46+00:00,api-impl,static,private-decl,Notifications,12,2.76,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:02:00+00:00,tree,static,private-decl,Notifications,13,9.13,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:02:08+00:00,api-impl,static,private-decl,Notifications,13,2.76,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:02:22+00:00,tree,static,private-decl,Notifications,14,8.90,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:02:29+00:00,api-impl,static,private-decl,Notifications,14,2.92,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:02:44+00:00,tree,static,private-decl,Notifications,15,9.01,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:02:51+00:00,api-impl,static,private-decl,Notifications,15,2.95,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:03:06+00:00,tree,static,private-decl,Notifications,16,9.18,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:03:14+00:00,api-impl,static,private-decl,Notifications,16,2.94,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:03:28+00:00,tree,static,private-decl,Notifications,17,8.95,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:03:35+00:00,api-impl,static,private-decl,Notifications,17,2.76,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:03:49+00:00,tree,static,private-decl,Notifications,18,8.94,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:03:57+00:00,api-impl,static,private-decl,Notifications,18,2.98,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:04:11+00:00,tree,static,private-decl,Notifications,19,9.09,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:04:20+00:00,api-impl,static,private-decl,Notifications,19,3.00,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:04:34+00:00,tree,static,private-decl,Notifications,20,9.26,0.00,14,222,Agenda Civitas Dining Events Home Library Notifications Parking ReportIssue Reservations Search Tickets Transit Wallet,0,ac
+2026-11-16T09:04:42+00:00,api-impl,static,private-decl,Notifications,20,2.85,0.00,2,8,Civitas Notifications,0,ac
+2026-11-16T09:05:08+00:00,tree,static,private-decl,ReportIssue,1,3.12,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:05:15+00:00,api-impl,static,private-decl,ReportIssue,1,2.80,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:05:24+00:00,tree,static,private-decl,ReportIssue,2,3.10,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:05:32+00:00,api-impl,static,private-decl,ReportIssue,2,2.98,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:05:40+00:00,tree,static,private-decl,ReportIssue,3,3.12,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:05:48+00:00,api-impl,static,private-decl,ReportIssue,3,2.79,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:05:56+00:00,tree,static,private-decl,ReportIssue,4,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:06:03+00:00,api-impl,static,private-decl,ReportIssue,4,2.80,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:06:12+00:00,tree,static,private-decl,ReportIssue,5,3.11,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:06:19+00:00,api-impl,static,private-decl,ReportIssue,5,2.79,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:06:28+00:00,tree,static,private-decl,ReportIssue,6,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:06:35+00:00,api-impl,static,private-decl,ReportIssue,6,2.77,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:06:43+00:00,tree,static,private-decl,ReportIssue,7,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:06:51+00:00,api-impl,static,private-decl,ReportIssue,7,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:06:59+00:00,tree,static,private-decl,ReportIssue,8,3.08,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:07:07+00:00,api-impl,static,private-decl,ReportIssue,8,2.79,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:07:15+00:00,tree,static,private-decl,ReportIssue,9,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:07:23+00:00,api-impl,static,private-decl,ReportIssue,9,2.96,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:07:31+00:00,tree,static,private-decl,ReportIssue,10,3.08,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:07:39+00:00,api-impl,static,private-decl,ReportIssue,10,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:07:47+00:00,tree,static,private-decl,ReportIssue,11,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:07:55+00:00,api-impl,static,private-decl,ReportIssue,11,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:08:03+00:00,tree,static,private-decl,ReportIssue,12,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:08:11+00:00,api-impl,static,private-decl,ReportIssue,12,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:08:19+00:00,tree,static,private-decl,ReportIssue,13,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:08:27+00:00,api-impl,static,private-decl,ReportIssue,13,2.77,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:08:35+00:00,tree,static,private-decl,ReportIssue,14,3.10,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:08:43+00:00,api-impl,static,private-decl,ReportIssue,14,2.77,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:08:51+00:00,tree,static,private-decl,ReportIssue,15,3.07,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:08:59+00:00,api-impl,static,private-decl,ReportIssue,15,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:09:07+00:00,tree,static,private-decl,ReportIssue,16,3.08,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:09:15+00:00,api-impl,static,private-decl,ReportIssue,16,2.95,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:09:23+00:00,tree,static,private-decl,ReportIssue,17,3.27,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:09:31+00:00,api-impl,static,private-decl,ReportIssue,17,2.77,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:09:39+00:00,tree,static,private-decl,ReportIssue,18,3.08,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:09:47+00:00,api-impl,static,private-decl,ReportIssue,18,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:09:55+00:00,tree,static,private-decl,ReportIssue,19,3.08,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:10:03+00:00,api-impl,static,private-decl,ReportIssue,19,2.78,0.00,2,8,Civitas ReportIssue,0,ac
+2026-11-16T09:10:11+00:00,tree,static,private-decl,ReportIssue,20,3.09,0.00,3,14,Civitas Home ReportIssue,0,ac
+2026-11-16T09:10:19+00:00,api-impl,static,private-decl,ReportIssue,20,2.77,0.00,2,8,Civitas ReportIssue,0,ac
