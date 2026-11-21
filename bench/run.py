@@ -66,7 +66,13 @@ STALL_SECONDS = 120.0
 # A stalled build is retried this many times before the configuration is given up and restarted.
 BUILD_ATTEMPTS = 3
 FIELDS = ["timestamp", "topology", "linking", "scenario", "hub", "run", "seconds", "generate_seconds",
-          "compiled_targets", "compiled_files", "targets", "exit_code", "power"]
+          "compiled_targets", "compiled_files", "targets", "exit_code", "power", "state"]
+# Written into a topology's derived data when it had to be rebuilt from cold after repeated stalls.
+# Incremental builds from cold-rebuilt derived data run up to about 2.8 times slower than from the state a
+# block of configurations builds up (results/2026-11-macmini/excluded-stall-recovery), so every timed row
+# while the marker exists is recorded with state "after-cold-restore" and left out of the analysis.
+# A clean build deletes derived data, and the marker with it.
+COLD_MARKER = ".bench-cold-restored"
 
 
 def project_dir(topology):
@@ -273,8 +279,23 @@ class Recorder:
         self.file.flush()
 
 
+def cold_restore(derived_data):
+    """Delete derived data after repeated stalls, and mark it so later timings are flagged."""
+    shutil.rmtree(derived_data, ignore_errors=True)
+    Path(derived_data).mkdir(parents=True, exist_ok=True)
+    (Path(derived_data) / COLD_MARKER).write_text(
+        datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds") + "\n")
+
+
+def build_state(scenario, derived_data):
+    if scenario == "clean":
+        return "clean"
+    return "after-cold-restore" if (Path(derived_data) / COLD_MARKER).exists() else "warm"
+
+
 def untimed_build(args, recorder, derived, topology, log, phase, scenario, hub, run):
-    """A build whose time is not recorded. After a stall it starts over from cold derived data."""
+    """A build whose time is not recorded. A stall is retried in place, keeping derived data. Only the
+    last attempt starts from cold derived data, and then the topology is marked as cold-restored."""
     for attempt in range(1, BUILD_ATTEMPTS + 1):
         try:
             return build(topology, derived[topology], args.build_timeout, log)
@@ -282,16 +303,20 @@ def untimed_build(args, recorder, derived, topology, log, phase, scenario, hub, 
             print(f"STALL: {phase} {scenario} {hub} {topology} run {run}, attempt {attempt}: {error}", flush=True)
             recorder.record_hang(phase=phase, topology=topology, scenario=scenario, hub=hub, run=run,
                                  attempt=attempt, seconds_before_kill=f"{error.seconds:.0f}")
-            shutil.rmtree(derived[topology], ignore_errors=True)
+            if attempt == BUILD_ATTEMPTS - 1:
+                cold_restore(derived[topology])
     raise BuildHung(f"{phase} build stalled {BUILD_ATTEMPTS} times", 0)
 
 
 def timed_build(args, recorder, derived, scenario, hub, runs, run, topology, log):
     """Times one build. If it stalls, rebuild the state the timed build starts from, then time it again.
 
-    Recovery deletes the topology's derived data, puts the probe back to the previous run's value,
-    builds without timing, and sets this run's value again. The retried build then sees the same
-    change from the same fully built state as an undisturbed run.
+    Recovery keeps the topology's derived data (the stall is in Xcode's build service, which build()
+    kills, not in derived data), puts the probe back to the previous run's value, builds without timing,
+    and sets this run's value again. The retried build then sees the same change from the same warm
+    state as an undisturbed run. Deleting derived data instead left every later build in the block up
+    to about 2.8 times slower, so that happens only inside untimed_build after repeated stalls, and the
+    affected rows are flagged through COLD_MARKER.
     """
     for attempt in range(1, BUILD_ATTEMPTS + 1):
         try:
@@ -300,8 +325,8 @@ def timed_build(args, recorder, derived, scenario, hub, runs, run, topology, log
             print(f"STALL: timed {scenario} {hub} {topology} run {run}, attempt {attempt}: {error}", flush=True)
             recorder.record_hang(phase="timed", topology=topology, scenario=scenario, hub=hub, run=run,
                                  attempt=attempt, seconds_before_kill=f"{error.seconds:.0f}")
-            shutil.rmtree(derived[topology], ignore_errors=True)
             if scenario == "clean":
+                shutil.rmtree(derived[topology], ignore_errors=True)   # a clean build starts empty anyway
                 continue
             if scenario == "add-file":
                 raise
@@ -345,7 +370,7 @@ def run_series(args, recorder, derived, scenario, hub, runs):
             recorder.record(topology=topology, linking=args.linking, scenario=scenario, hub=hub, run=run,
                             seconds=f"{seconds:.2f}", generate_seconds=f"{generate_seconds:.2f}",
                             compiled_targets=len(targets), compiled_files=files, targets=" ".join(targets), exit_code=code,
-                            power=power_source())
+                            power=power_source(), state=build_state(scenario, derived[topology]))
             print(f"{scenario:12} {hub:13} {topology:8} run {run:2}: {seconds:7.2f}s  {len(targets):2} targets  {files:3} files"
                   + ("" if code == 0 else f"  FAILED ({code}), see {log}"), flush=True)
 
