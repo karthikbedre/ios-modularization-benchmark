@@ -4,7 +4,8 @@
 Reads the timing CSVs at the top level of a results folder (subfolders such as excluded-* are
 ignored). If the folder has .done markers, as it does on the machine that ran the matrix, only
 finished configurations are read. A fresh clone has no markers, so every committed CSV is read.
-Rows with a nonzero exit code or timed on battery are dropped and counted.
+Rows with a nonzero exit code, timed on battery, or timed after a cold restore of derived data
+(state "after-cold-restore", see COLD_MARKER in bench/run.py) are dropped and counted.
 
 Usage
   analysis/analyze.py results/2026-11-macmini
@@ -36,7 +37,7 @@ SEED = 20261116
 def load(folder):
     """Returns {(linking, n, scenario, hub, topology): [row, ...]} and counts of dropped rows."""
     markers = {p.stem for p in folder.glob("*.done")}
-    cells, dropped = defaultdict(list), {"failed": 0, "battery": 0, "unfinished_configs": 0}
+    cells, dropped = defaultdict(list), {"failed": 0, "battery": 0, "cold_restore": 0, "unfinished_configs": 0}
     for path in sorted(folder.glob("*.csv")):
         match = CONFIG.match(path.stem)
         if not match:
@@ -51,6 +52,9 @@ def load(folder):
                 continue
             if row.get("power", "ac") != "ac":
                 dropped["battery"] += 1
+                continue
+            if row.get("state") == "after-cold-restore":
+                dropped["cold_restore"] += 1
                 continue
             row["seconds"] = float(row["seconds"])
             row["compiled_targets"] = int(row["compiled_targets"])
@@ -202,6 +206,7 @@ def main():
     print(f"# Benchmark summary: {args.results}\n")
     print(f"Configurations read: {len({k[:3] for k in cells})}. Timed builds: {sum(len(v) for v in cells.values())}. "
           f"Dropped: {dropped['failed']} failed, {dropped['battery']} on battery, "
+          f"{dropped['cold_restore']} after a cold restore, "
           f"{dropped['unfinished_configs']} unfinished configurations.")
     hangs = args.results / "hangs.csv"
     if hangs.exists():
