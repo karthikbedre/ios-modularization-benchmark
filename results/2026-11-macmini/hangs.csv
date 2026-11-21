@@ -9,3 +9,4 @@ timestamp,config,phase,topology,scenario,hub,run,attempt,seconds_before_kill
 2026-11-21T10:07:28+00:00,static-200-public-impl,timed,tree,public-impl,Identity,9,1,151
 2026-11-21T11:31:38+00:00,dynamic-100-clean,timed,tree,clean,-,1,1,196
 2026-11-21T12:53:10+00:00,dynamic-100-api-change,timed,tree,api-change,Identity,1,1,151
+2026-11-21T14:52:10+00:00,static-25-api-change,timed,tree,api-change,Identity,20,1,135
