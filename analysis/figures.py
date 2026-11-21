@@ -136,8 +136,9 @@ def fig3(rows, out: Path, n: int = 100, hub: str = "Notifications") -> None:
     ax.set_yticks(range(len(scenarios)), [SCENARIO_NAME[s] for s in scenarios])
     ax.invert_yaxis()
     ax.set_xlabel(f"Targets recompiled, {n} features, change in {hub}")
+    ax.set_xlim(0, max(max(t[3], t[4]) for t in table) * 1.12)
     ax.grid(axis="y", visible=False)
-    ax.legend(loc="lower right", fontsize=8)
+    ax.legend(loc="lower center", bbox_to_anchor=(0.5, 1.0), ncol=2, fontsize=8)
     fig.savefig(out / "fig3-recompiled.png")
     plt.close(fig)
     write_csv(out / "fig3-recompiled.csv", ["scenario", "hub", "features", "single_module_targets",
