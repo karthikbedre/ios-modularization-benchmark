@@ -18,6 +18,7 @@ build/
 results/*/logs/
 results/*/matrix.out
 results/*/*.done
+results/*/*/*/*.done
 
 # Analysis output, rebuilt from results/ by analysis/analyze.py
 analysis/out/

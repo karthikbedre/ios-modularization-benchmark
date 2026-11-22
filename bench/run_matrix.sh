@@ -41,6 +41,11 @@ run() {
         if [ "$code" -ne 3 ]; then echo "FAILED: $name $scenario exited $code" >&2; exit "$code"; fi
         echo "restarting $name $scenario after a hung build (attempt $attempt)"
         rm -rf "${DERIVED:?}/${folder:?}/tree-${linking:?}" "${DERIVED:?}/${folder:?}/api-impl-${linking:?}"
+        # The restart begins from cold derived data, so its timings are flagged (see COLD_MARKER in run.py).
+        for topology in tree api-impl; do
+            mkdir -p "$DERIVED/$folder/$topology-$linking"
+            date -u +%Y-%m-%dT%H:%M:%SZ > "$DERIVED/$folder/$topology-$linking/.bench-cold-restored"
+        done
     done
     echo "FAILED: $name $scenario hung three times" >&2
     exit 3

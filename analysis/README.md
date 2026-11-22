@@ -33,3 +33,12 @@ analysis/graph_metrics.py results/2026-11-macmini --out analysis/out/2026-11-mac
 Sizes above 16 are read from `build/scale/<N>`, which `civitas-gen --domains <N> --output build/scale/<N>` regenerates deterministically.
 
 Findings from the 2026-11-macmini run: 91 of 126 change cells match the prediction exactly, and every mismatch is the prediction being one target too high. In the tree layout, Search depends on Identity only through other features and is not recompiled, because Swift rebuilds a module only when a module it imports directly changes its interface. In the interface layout, the app target is not recompiled after an interface change it does not use. Clean build time tracks targets, edges and files (r of 0.96 to 1.00), not depth or the critical path.
+
+## Figures
+
+`figures.py` draws the paper's figures from the tables `analyze.py --out` writes, each as a 300 dpi PNG with a CSV of exactly the values it plots. Unlike the scripts above it needs matplotlib.
+
+```
+analysis/analyze.py results/2026-11-macmini --out analysis/out/2026-11-macmini
+analysis/figures.py analysis/out/2026-11-macmini results/2026-11-macmini/figures
+```

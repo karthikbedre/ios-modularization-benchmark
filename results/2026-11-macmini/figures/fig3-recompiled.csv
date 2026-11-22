@@ -1,0 +1,5 @@
+scenario,hub,features,single_module_targets,interface_targets
+private-body,Notifications,100,1.0,1.0
+private-decl,Notifications,100,69.0,2.0
+public-impl,Notifications,100,69.0,2.0
+api-change,Notifications,100,69.0,28.0

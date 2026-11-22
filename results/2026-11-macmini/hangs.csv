@@ -5,3 +5,8 @@ timestamp,config,phase,topology,scenario,hub,run,attempt,seconds_before_kill
 2026-11-17T02:13:33+00:00,static-200-api-change,timed,tree,api-change,Identity,2,1,150
 2026-11-17T05:50:40+00:00,dynamic-100-private-decl,restore,tree,private-decl,Identity,0,1,150
 2026-11-17T06:20:36+00:00,dynamic-100-public-impl,timed,tree,public-impl,Identity,4,1,135
+2026-11-19T07:27:17+00:00,static-200-api-change,timed,tree,api-change,Identity,1,1,151
+2026-11-21T10:07:28+00:00,static-200-public-impl,timed,tree,public-impl,Identity,9,1,151
+2026-11-21T11:31:38+00:00,dynamic-100-clean,timed,tree,clean,-,1,1,196
+2026-11-21T12:53:10+00:00,dynamic-100-api-change,timed,tree,api-change,Identity,1,1,151
+2026-11-21T14:52:10+00:00,static-25-api-change,timed,tree,api-change,Identity,20,1,135
